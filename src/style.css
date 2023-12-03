@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sen:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@600&display=swap");
+
+html {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #1c0d02;
+}
+
+.font-sen {
+  font-family: "Sen", sans-serif;
+}
+.font-plex {
+  font-family: "IBM Plex Sans Devanagari", sans-serif;
+}
