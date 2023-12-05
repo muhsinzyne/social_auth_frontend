@@ -1,46 +1,164 @@
-<script setup lang="ts">
-import LeftSection from "./components/LeftSection/index.vue";
-import RightSection from "./components/RightSection/index.vue";
-
-import { ref } from "vue";
-
-const isVisible = ref(false);
-
-const updateVisibility = (value: boolean) => {
-  isVisible.value = value;
-};
-</script>
-
 <template>
-  <!-- <div
-    class="bg-black fixed z-50 w-full h-[4rem] flex justify-between items-center p-5"
+  <nav
+    class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600"
   >
-    <LeftSection />
-    <RightSection /> -->
-  <nav class="bg-[#e3f2fd] dark:bg-gray-800 shadow fixed w-full">
-    <LeftSection :isVisible="isVisible" @updateVisibility="updateVisibility" />
-    <RightSection v-if="isVisible" />
+    <div class="flex flex-wrap items-center justify-between mx-auto p-4">
+      <a
+        href="https://flowbite.com/"
+        class="flex items-center space-x-3 rtl:space-x-reverse"
+      >
+        <img
+          src="https://flowbite.com/docs/images/logo.svg"
+          class="h-8"
+          alt="Flowbite Logo"
+        />
+        <span
+          class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+          >OTPLESS</span
+        >
+      </a>
+      <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button
+          @click="navigateToSignin"
+          type="button"
+          class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        >
+          Sign In
+        </button>
+
+        <button
+          type="button"
+          class="text-white bg-gray-800 max-[990px]:hidden hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        >
+          Book a Demo
+        </button>
+        <button
+          data-collapse-toggle="navbar-sticky"
+          type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-sticky"
+          aria-expanded="false"
+          id="triggerEl"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg
+            class="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+      </div>
+      <div
+        class="items-center justify-between lg:absolute lg:right-72 hidden w-full md:flex md:w-auto md:order-1"
+        id="targetEl"
+      >
+        <ul
+          class="flex flex-col p-4 md:p-0 mt-4 font-normal border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+        >
+          <li>
+            <a
+              href="#"
+              class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+              aria-current="page"
+              >Integration</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+            >
+              APIs
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >SDK</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >Pricing</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >Support
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >FAQs</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
   </nav>
-  <!-- <div class="flex-1 flex items-center justify-center">
-    <div
-      class="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-    >
-      <p
-        class="font-plex font-bold lg:text-[4rem] md:text-[3.5rem] max-md:text-[3rem] max-sm:text-[2.5rem] leading-[1.2em] text-white"
-      >
-        Connect with your Customers without OTPs.
-      </p>
-    </div>
-  </div> -->
-  <div
-    class="flex min-h-screen items-center justify-center bg-gradient-to-tr to-[#1dadd800] from-indigo-900 p-10"
-  >
-    <div class="w-max max-w-[73em]">
-      <h1
-        class="font-plex lg:text-[4rem] md:text-[3.5rem] max-md:text-[3rem] max-sm:text-[2.5rem] leading-[1.2em] overflow-hidden pr-5 text-5xl text-white font-bold"
-      >
-        Connect with your Customers without OTPs.
-      </h1>
-    </div>
-  </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { Collapse } from "flowbite";
+import type { CollapseOptions, CollapseInterface } from "flowbite";
+import type { InstanceOptions } from "flowbite";
+import { useRouter } from "vue-router";
+
+const targetEl = ref<HTMLElement | null>(null);
+const triggerEl = ref<HTMLElement | null>(null);
+
+const options: CollapseOptions = {
+  onCollapse: () => {
+    console.log("element has been collapsed");
+  },
+  onExpand: () => {
+    console.log("element has been expanded");
+  },
+  onToggle: () => {
+    console.log("element has been toggled");
+  },
+};
+
+const instanceOptions: InstanceOptions = {
+  id: "targetEl",
+  override: true,
+};
+
+const collapse = ref<CollapseInterface | null>(null);
+
+onMounted(() => {
+  targetEl.value = document.getElementById("targetEl");
+  triggerEl.value = document.getElementById("triggerEl");
+
+  if (targetEl.value) {
+    collapse.value = new Collapse(
+      targetEl.value,
+      triggerEl.value,
+      options,
+      instanceOptions
+    );
+  }
+});
+
+const router = useRouter();
+
+const navigateToSignin = () => router.push("/signin");
+</script>
