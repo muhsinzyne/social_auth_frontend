@@ -50,17 +50,3 @@
   </div>
   <!--end::Authentication Layout -->
 </template>
-
-<script lang="ts">
-import { getAssetPath } from "../core/helpers/assets";
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "auth-layout",
-  components: {},
-  setup() {
-    return {
-      getAssetPath,
-    };
-  },
-});
-</script>

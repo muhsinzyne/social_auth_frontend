@@ -96,63 +96,50 @@
           class="p-6 flex justify-center items-center font-semibold text-gray-600"
         >
           Not a member yet?
-          <span class="text-blue-700 hover:cursor-pointer">&nbsp;Sign Up</span>
+          <span
+            @click="handleNavigate('sign-up')"
+            class="text-blue-700 hover:cursor-pointer"
+            >&nbsp;Sign Up</span
+          >
         </div>
       </Form>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { getAssetPath } from "../../core/helpers/assets";
-import { defineComponent, ref } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
-import { useRouter } from "vue-router";
+import { handleNavigate } from "@/core/helpers/path";
 
-export default defineComponent({
-  name: "sign-up",
-  components: {
-    Field,
-    Form,
-    ErrorMessage,
-  },
-  setup() {
-    const submitButton = ref<HTMLButtonElement | null>(null);
-    const router = useRouter();
+const submitButton = ref<HTMLButtonElement | null>(null);
 
-    const registration = Yup.object().shape({
-      email: Yup.string().min(4).required().email().label("Email"),
-      password: Yup.string().required().label("Password"),
-    });
-
-    const onSubmitLogin = async (values: any) => {
-      console.log(values, "[VALUES]");
-      submitButton.value!.disabled = true;
-
-      if (true) {
-        Swal.fire({
-          text: "You have successfully Logged In!",
-          icon: "success",
-          buttonsStyling: false,
-          heightAuto: false,
-          customClass: {
-            confirmButton: "btn fw-semibold btn-light-primary",
-          },
-        }).then(function () {
-          router.push({ name: "sign-in" });
-        });
-      }
-      submitButton.value!.disabled = false;
-    };
-
-    return {
-      registration,
-      onSubmitLogin,
-      submitButton,
-      getAssetPath,
-    };
-  },
+// Validation stages
+const registration = Yup.object().shape({
+  email: Yup.string().min(4).required().email().label("Email"),
+  password: Yup.string().required().label("Password"),
 });
+
+// Handling login functionalities
+const onSubmitLogin = async (values: any) => {
+  console.log(values, "[VALUES]");
+  submitButton.value!.disabled = true;
+
+  if (true) {
+    Swal.fire({
+      text: "You have successfully Logged In!",
+      icon: "success",
+      buttonsStyling: false,
+      heightAuto: false,
+      customClass: {
+        confirmButton: "btn fw-semibold btn-light-primary",
+      },
+    }).then(function () {
+      handleNavigate("sign-in");
+    });
+  }
+  submitButton.value!.disabled = false;
+};
 </script>

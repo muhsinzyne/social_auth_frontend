@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import Navbar from "../../common/components/Navbar/index.vue";
+import Navbar from "@/common/components/Navbar/index.vue";
 
 const router = useRouter();
 
