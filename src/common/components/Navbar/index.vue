@@ -160,5 +160,5 @@ onMounted(() => {
 
 const router = useRouter();
 
-const navigateToSignin = () => router.push("/signin");
+const navigateToSignin = () => router.push({ name: "sign-in" });
 </script>
