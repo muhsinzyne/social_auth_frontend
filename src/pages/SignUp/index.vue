@@ -118,10 +118,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ErrorMessage, Field, Form } from "vee-validate";
 import * as Yup from "yup";
+import bcrypt from "bcryptjs";
 import Swal from "sweetalert2";
+import { registerUser } from "@/core/services";
 import { handleNavigate } from "@/core/helpers/path";
+import { ErrorMessage, Field, Form } from "vee-validate";
 
 const submitButton = ref<HTMLButtonElement | null>(null);
 
@@ -138,21 +140,51 @@ const registration = Yup.object().shape({
 // Handling signUp functionalities
 const onSubmitRegister = async (values: any) => {
   console.log(values, "[VALUES]");
-  submitButton.value!.disabled = true;
 
-  if (true) {
-    Swal.fire({
-      text: "You have successfully Registered!",
-      icon: "success",
-      buttonsStyling: false,
-      heightAuto: false,
-      customClass: {
-        confirmButton: "btn fw-semibold btn-light-primary",
-      },
-    }).then(function () {
-      handleNavigate("sign-in");
-    });
+  if (values) {
+    try {
+      submitButton.value!.disabled = true;
+
+      const hashedPassword = await bcrypt.hash(values.password, 10);
+
+      const payload = {
+        email: values.email,
+        password: hashedPassword,
+      };
+
+      //Calling endpoint for registering the user
+      const response = await registerUser(payload);
+
+      const { success } = response;
+
+      if (success) {
+        Swal.fire({
+          text: "You have successfully Registered!",
+          icon: "success",
+          buttonsStyling: false,
+          heightAuto: false,
+          customClass: {
+            confirmButton: "btn fw-semibold btn-light-primary",
+          },
+        }).then(function () {
+          handleNavigate("sign-in");
+        });
+      } else {
+        Swal.fire({
+          text: "Something went wrong!",
+          icon: "error",
+          buttonsStyling: false,
+          heightAuto: false,
+          customClass: {
+            confirmButton: "btn fw-semibold btn-light-primary",
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      submitButton.value!.disabled = false;
+    }
   }
-  submitButton.value!.disabled = false;
 };
 </script>
