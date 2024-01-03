@@ -109,10 +109,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ErrorMessage, Field, Form } from "vee-validate";
 import * as Yup from "yup";
-import Swal from "sweetalert2";
+import { ERRORS } from "@/utils/constants";
+import { userLogin } from "@/core/services";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 import { handleNavigate } from "@/core/helpers/path";
+import { ErrorMessage, Field, Form } from "vee-validate";
+import { RegistrationCredsType } from "@/common/types/types";
 
 const submitButton = ref<HTMLButtonElement | null>(null);
 
@@ -122,24 +125,46 @@ const registration = Yup.object().shape({
   password: Yup.string().required().label("Password"),
 });
 
-// Handling login functionalities
-const onSubmitLogin = async (values: any) => {
-  console.log(values, "[VALUES]");
-  submitButton.value!.disabled = true;
+const swal = (message: string, status: SweetAlertIcon) => {
+  Swal.fire({
+    text: message,
+    icon: status,
+    buttonsStyling: false,
+    heightAuto: false,
+    showConfirmButton: false,
+    timer: 1500,
+  });
+};
 
-  if (true) {
-    Swal.fire({
-      text: "You have successfully Logged In!",
-      icon: "success",
-      buttonsStyling: false,
-      heightAuto: false,
-      customClass: {
-        confirmButton: "btn fw-semibold btn-light-primary",
-      },
-    }).then(function () {
-      handleNavigate("sign-in");
-    });
+// Handling login functionalities
+const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
+  if (values) {
+    submitButton.value!.disabled = true;
+    try {
+      const response = await userLogin(values as RegistrationCredsType);
+
+      const { success, error, data } = response;
+
+      if (!success) {
+        switch (error) {
+          case ERRORS.USER_NOT_FOUND.message:
+            return swal("Invalid Email!", "error");
+          case ERRORS.INVALID_CREDS.message:
+            return swal("Invalid Password!", "error");
+          default:
+            return swal("Something went wrong!", "error");
+        }
+      }
+
+      console.log(data, "[DATA]");
+
+      swal("You have successfully Logged In!", "success");
+      handleNavigate("dashboard");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      submitButton.value!.disabled = false;
+    }
   }
-  submitButton.value!.disabled = false;
 };
 </script>

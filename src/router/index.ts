@@ -4,6 +4,7 @@ import Home from "@/pages/Home/index.vue";
 import SignIn from "@/pages/SignIn/index.vue";
 import SignUp from "@/pages/SignUp/index.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
+import Dashboard from "@/pages/Dashboard/index.vue";
 
 const routes = [
   {
@@ -35,6 +36,7 @@ const routes = [
     ],
   },
   { path: "/", name: "home", component: Home },
+  { path: "/dashboard", name: "dashboard", component: Dashboard },
 ];
 
 const router = createRouter({
