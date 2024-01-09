@@ -121,7 +121,7 @@ import { ref } from "vue";
 import * as Yup from "yup";
 import bcrypt from "bcryptjs";
 import Swal from "sweetalert2";
-import { registerUser } from "@/core/services";
+import { registerUser } from "@/core/services/routes/auth";
 import { handleNavigate } from "@/core/helpers/path";
 import { ErrorMessage, Field, Form } from "vee-validate";
 
