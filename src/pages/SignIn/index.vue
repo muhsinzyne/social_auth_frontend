@@ -111,9 +111,10 @@
 import { ref } from "vue";
 import * as Yup from "yup";
 import { ERRORS } from "@/utils/constants";
-import { userLogin } from "@/core/services";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { handleNavigate } from "@/core/helpers/path";
+import { saveToken } from "@/core/services/JwtService";
+import { userLogin } from "@/core/services/routes/auth";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import { RegistrationCredsType } from "@/common/types/types";
 
@@ -158,7 +159,10 @@ const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
 
       console.log(data, "[DATA]");
 
+      data && saveToken(data.accessToken);
+
       swal("You have successfully Logged In!", "success");
+
       handleNavigate("dashboard");
     } catch (error) {
       console.error(error);

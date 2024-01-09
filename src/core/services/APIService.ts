@@ -2,6 +2,9 @@ import type { App } from "vue";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import { getToken, destroyToken, saveToken } from "./JwtService";
+import { tokenRefresh } from "./routes/auth";
+import { handleNavigate } from "../helpers/path";
 
 /**
  * @description service to call HTTP request via Axios
@@ -19,7 +22,7 @@ class ApiService {
     ApiService.vueInstance = app;
     ApiService.vueInstance.use(VueAxios, axios);
     ApiService.vueInstance.axios.defaults.baseURL =
-      import.meta.env.VITE_APP_API_URL;
+      import.meta.env.VITE_APP_BASE_URL;
   }
 
   /**
@@ -28,9 +31,55 @@ class ApiService {
   public static setHeader(): void {
     ApiService.vueInstance.axios.defaults.headers.common[
       "Authorization"
-    ] = `Token 123`;
+    ] = `Bearer ${getToken()}`;
     ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
       "application/json";
+
+    // Set up response interceptor
+    ApiService.vueInstance.axios.interceptors.response.use(
+      (response: AxiosResponse) => {
+        return response;
+      },
+
+      async (error) => {
+        // Handle token expiration and recall
+        console.log(error);
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.status === 401
+        ) {
+          // Token expired, remove the current token
+          destroyToken();
+
+          if (error.response.data.error === "Access Token Expired") {
+            try {
+              const response = await tokenRefresh(); // Replace with your actual function to fetch a new token
+
+              const newToken = response.data?.accessToken || "";
+
+              saveToken(newToken);
+
+              // Recall the original request with the new token
+              const originalRequest = error.config;
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+              // Return the Axios call to make the recall
+              return ApiService.vueInstance.axios(originalRequest);
+            } catch (refreshError) {
+              // Handle token fetch error
+              // Return a rejected promise with the error from token refresh
+              return Promise.reject(refreshError);
+            }
+          } else if (error.response.data.error === "Refresh Token Expired") {
+            handleNavigate("sign-in");
+          }
+        }
+
+        // Return the original error in case it's not a 401
+        return Promise.reject(error);
+      }
+    );
   }
 
   /**
@@ -51,9 +100,10 @@ class ApiService {
    */
   public static get(
     resource: string,
-    slug = "" as string
+    slug = "" as string,
+    config?: any
   ): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.get(`${resource}/${slug}`);
+    return ApiService.vueInstance.axios.get(`${resource}/${slug}`, config);
   }
 
   /**
@@ -62,8 +112,12 @@ class ApiService {
    * @param params: AxiosRequestConfig
    * @returns Promise<AxiosResponse>
    */
-  public static post(resource: string, params: any): Promise<AxiosResponse> {
-    return ApiService.vueInstance.axios.post(`${resource}`, params);
+  public static post(
+    resource: string,
+    params: any,
+    config?: any
+  ): Promise<AxiosResponse> {
+    return ApiService.vueInstance.axios.post(`${resource}`, params, config);
   }
 
   /**

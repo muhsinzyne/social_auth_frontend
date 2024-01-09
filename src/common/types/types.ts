@@ -8,9 +8,18 @@ export interface RegistrationCredsType {
   password: string;
 }
 
-export interface userLoginResponseType extends CommonErrorResponse {
+export interface UserLoginResponseType extends CommonErrorResponse {
   data?: {
-    id: number;
-    email: string;
+    accessToken: string;
+    user: {
+      id: number;
+      email: string;
+    };
+  };
+}
+
+export interface TokenRefreshResponse extends CommonErrorResponse {
+  data?: {
+    accessToken: string;
   };
 }
