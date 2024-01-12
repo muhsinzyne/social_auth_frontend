@@ -9,6 +9,7 @@
       <section class="pb-9 flex">
         <div class="flex items-center justify-center gap-2">
           <button
+            @click="signinWithGoogle"
             type="button"
             class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2 mb-2 gap-2"
           >
@@ -21,6 +22,7 @@
         </div>
         <div class="flex items-center justify-center gap-2">
           <button
+            @click="signinWithGoogle"
             type="button"
             class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2 mb-2 gap-2"
           >
@@ -170,5 +172,9 @@ const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
       submitButton.value!.disabled = false;
     }
   }
+};
+
+const signinWithGoogle = () => {
+  window.location.href = import.meta.env.VITE_APP_BASE_URL + "/auth/google";
 };
 </script>

@@ -4,7 +4,7 @@ const ID_TOKEN_KEY: string = "token";
  * @description get token form localStorage
  */
 export const getToken = (): string | null => {
-  return window.localStorage.getItem(ID_TOKEN_KEY);
+  return window.localStorage.getItem(ID_TOKEN_KEY) || getCookie(ID_TOKEN_KEY);
 };
 
 /**
@@ -20,4 +20,20 @@ export const saveToken = (token: string): void => {
  */
 export const destroyToken = (): void => {
   window.localStorage.removeItem(ID_TOKEN_KEY);
+};
+
+function getCookie(name: string): string {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+
+  if (parts.length === 2) {
+    const cookieValue = parts.pop()?.split(";").shift();
+    return cookieValue !== undefined ? decodeURIComponent(cookieValue) : "";
+  }
+
+  return "";
+}
+
+export const deleteCookie = (): void => {
+  document.cookie = `${ID_TOKEN_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };

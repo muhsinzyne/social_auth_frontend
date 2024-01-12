@@ -2,7 +2,7 @@ import type { App } from "vue";
 import type { AxiosResponse } from "axios";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import { getToken, destroyToken, saveToken } from "./JwtService";
+import { getToken, destroyToken, saveToken, deleteCookie } from "./JwtService";
 import { tokenRefresh } from "./routes/auth";
 import { handleNavigate } from "../helpers/path";
 
@@ -51,6 +51,7 @@ class ApiService {
         ) {
           // Token expired, remove the current token
           destroyToken();
+          deleteCookie();
 
           if (error.response.data.error === "Access Token Expired") {
             try {
@@ -71,9 +72,13 @@ class ApiService {
               // Return a rejected promise with the error from token refresh
               return Promise.reject(refreshError);
             }
-          } else if (error.response.data.error === "Refresh Token Expired") {
+          } else if (
+            error.response.data.error === "Refresh Token Expired" ||
+            error.response.data.error === "Invalid Access Token"
+          ) {
             handleNavigate("sign-in");
           }
+          handleNavigate("sign-in");
         }
 
         // Return the original error in case it's not a 401

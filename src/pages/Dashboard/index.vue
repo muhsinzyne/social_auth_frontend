@@ -8,6 +8,6 @@ import { onMounted } from "vue";
 import Navbar from "@/common/components/Navbar/index.vue";
 
 onMounted(async () => {
-  await getSingleUser("8");
+  await getSingleUser("1");
 });
 </script>
