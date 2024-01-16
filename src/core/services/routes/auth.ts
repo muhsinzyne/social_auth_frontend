@@ -1,7 +1,10 @@
 import {
+  AccountCheckType,
+  IsAuthResponseType,
   RegistrationCredsType,
   TokenRefreshResponse,
   UserLoginResponseType,
+  AccountTypeResponse,
 } from "@/common/types/types";
 import ApiService from "../APIService";
 
@@ -25,5 +28,19 @@ export const tokenRefresh = async (): Promise<TokenRefreshResponse> => {
   const response = await ApiService.get("/api/auth/token/refresh", "", {
     withCredentials: true,
   });
+  return response.data;
+};
+
+export const isAuthenticated = async (): Promise<IsAuthResponseType> => {
+  const response = await ApiService.get("/api/auth/authentication", "", {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+export const accountCheck = async (
+  creds: AccountCheckType
+): Promise<AccountTypeResponse> => {
+  const response = await ApiService.post("/api/auth/account/check", creds);
   return response.data;
 };

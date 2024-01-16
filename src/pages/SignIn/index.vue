@@ -6,20 +6,7 @@
         <div class="text-gray-500 font-medium">Your Social Campaigns</div>
       </header>
 
-      <section class="pb-9 flex">
-        <div class="flex items-center justify-center gap-2">
-          <button
-            @click="signinWithGoogle"
-            type="button"
-            class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 me-2 mb-2 gap-2"
-          >
-            <img
-              src="../../assets/google.svg"
-              class="w-[22px]"
-              alt="google-logo"
-            /><span>Sign In With Google</span>
-          </button>
-        </div>
+      <section class="pb-9 flex items-center justify-center">
         <div class="flex items-center justify-center gap-2">
           <button
             @click="signinWithGoogle"
@@ -57,28 +44,30 @@
         id="kt_login_signup_form"
         :validation-schema="registration"
       >
-        <div class="flex items-center mb-5 mt-8">
+        <div class="grid mb-5 mt-8">
           <Field
             type="email"
             name="email"
-            class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             placeholder="Email"
             autocomplete="off"
             required
           />
+          <div><ErrorMessage name="email" class="text-red-600 text-sm" /></div>
         </div>
-        <div><ErrorMessage name="email" /></div>
-        <div class="flex items-center mb-5">
+        <div class="grid mb-5">
           <Field
             type="password"
             name="password"
-            class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
             placeholder="Password"
             autocomplete="off"
             required
           />
+          <div>
+            <ErrorMessage name="password" class="text-red-600 text-sm" />
+          </div>
         </div>
-        <div><ErrorMessage name="password" /></div>
         <div
           class="flex justify-end items-center text-blue-700 hover:cursor-pointer font-semibold text-sm w-full mb-5"
         >
@@ -104,6 +93,9 @@
             >&nbsp;Sign Up</span
           >
         </div>
+        <div class="text-gray-400 font-semibold text-sm w-full mb-5 invisible">
+          Use 8 or more characters with a mix of letters, numbers & symbols.
+        </div>
       </Form>
     </div>
   </div>
@@ -113,12 +105,12 @@
 import { ref } from "vue";
 import * as Yup from "yup";
 import { ERRORS } from "@/utils/constants";
-import Swal, { SweetAlertIcon } from "sweetalert2";
 import { handleNavigate } from "@/core/helpers/path";
 import { saveToken } from "@/core/services/JwtService";
 import { userLogin } from "@/core/services/routes/auth";
 import { ErrorMessage, Field, Form } from "vee-validate";
 import { RegistrationCredsType } from "@/common/types/types";
+import Swall from "@/core/helpers/swal";
 
 const submitButton = ref<HTMLButtonElement | null>(null);
 
@@ -128,17 +120,6 @@ const registration = Yup.object().shape({
   password: Yup.string().required().label("Password"),
 });
 
-const swal = (message: string, status: SweetAlertIcon) => {
-  Swal.fire({
-    text: message,
-    icon: status,
-    buttonsStyling: false,
-    heightAuto: false,
-    showConfirmButton: false,
-    timer: 1500,
-  });
-};
-
 // Handling login functionalities
 const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
   if (values) {
@@ -146,28 +127,30 @@ const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
     try {
       const response = await userLogin(values as RegistrationCredsType);
 
-      const { success, error, data } = response;
+      const { success, data } = response;
 
-      if (!success) {
-        switch (error) {
-          case ERRORS.USER_NOT_FOUND.message:
-            return swal("Invalid Email!", "error");
-          case ERRORS.INVALID_CREDS.message:
-            return swal("Invalid Password!", "error");
-          default:
-            return swal("Something went wrong!", "error");
+      if (success) {
+        data && saveToken(data.accessToken);
+
+        Swall.Timer("You have successfully Logged In!", "success");
+
+        handleNavigate("dashboard");
+      }
+    } catch (error: any) {
+      console.error(error);
+
+      if (error?.response?.data) {
+        if (!error.response.data.success && error.response.data.error) {
+          switch (error.response.data.error) {
+            case ERRORS.USER_NOT_FOUND.message:
+              return Swall.Timer("Invalid Email!", "error");
+            case ERRORS.INVALID_CREDS.message:
+              return Swall.Timer("Invalid Password!", "error");
+            default:
+              return Swall.Timer("Something went wrong!", "error");
+          }
         }
       }
-
-      console.log(data, "[DATA]");
-
-      data && saveToken(data.accessToken);
-
-      swal("You have successfully Logged In!", "success");
-
-      handleNavigate("dashboard");
-    } catch (error) {
-      console.error(error);
     } finally {
       submitButton.value!.disabled = false;
     }

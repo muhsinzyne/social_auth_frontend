@@ -6,6 +6,8 @@ import SignUp from "@/pages/SignUp/index.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
 import Dashboard from "@/pages/Dashboard/index.vue";
 
+import { checkIfIsAuthenticated } from "@/core/services/JwtService";
+
 const routes = [
   {
     path: "/sign-up",
@@ -36,12 +38,32 @@ const routes = [
     ],
   },
   { path: "/", name: "home", component: Home },
-  { path: "/dashboard", name: "dashboard", component: Dashboard },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: Dashboard,
+    meta: {
+      requiresAuth: true, // Add this meta field to indicate authentication is required
+    },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// Add a navigation guard to check authentication before each route change
+router.beforeEach(async (to, from, next) => {
+  if (!to.meta.requiresAuth) next(); // Proceed to the next route
+
+  const isAuthenticated = await checkIfIsAuthenticated();
+  if (!isAuthenticated) {
+    // If the route requires authentication and the user is not authenticated, redirect to the login page or another route
+    next("/sign-in");
+  } else {
+    next(); // Proceed to the next route
+  }
 });
 
 export default router;

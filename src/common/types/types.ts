@@ -23,3 +23,21 @@ export interface TokenRefreshResponse extends CommonErrorResponse {
     accessToken: string;
   };
 }
+
+export interface IsAuthResponseType extends CommonErrorResponse {
+  data?: {
+    auth: boolean;
+  };
+}
+
+export interface AccountCheckType {
+  source: "google" | "manual";
+  email: string;
+}
+
+export interface AccountTypeResponse extends CommonErrorResponse {
+  data: {
+    linkAccount: boolean;
+    login: boolean;
+  };
+}

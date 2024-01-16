@@ -1,3 +1,5 @@
+import { isAuthenticated } from "./routes/auth";
+
 const ID_TOKEN_KEY: string = "token";
 
 /**
@@ -37,3 +39,14 @@ function getCookie(name: string): string {
 export const deleteCookie = (): void => {
   document.cookie = `${ID_TOKEN_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
+
+export async function checkIfIsAuthenticated(): Promise<boolean> {
+  try {
+    const response = await isAuthenticated();
+    if (response?.data?.auth) return true;
+    return false;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
