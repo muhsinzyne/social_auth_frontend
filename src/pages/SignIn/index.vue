@@ -69,6 +69,7 @@
           </div>
         </div>
         <div
+          @click="handleNavigate('forgot-password')"
           class="flex justify-end items-center text-blue-700 hover:cursor-pointer font-semibold text-sm w-full mb-5"
         >
           Forgot Password?

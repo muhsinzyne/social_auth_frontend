@@ -5,6 +5,9 @@ import {
   TokenRefreshResponse,
   UserLoginResponseType,
   AccountTypeResponse,
+  ResetPasswordType,
+  ResetPassworResponse,
+  ForgotPassworResponse,
 } from "@/common/types/types";
 import ApiService from "../APIService";
 
@@ -42,5 +45,19 @@ export const accountCheck = async (
   creds: AccountCheckType
 ): Promise<AccountTypeResponse> => {
   const response = await ApiService.post("/api/auth/account/check", creds);
+  return response.data;
+};
+
+export const forgotPassword = async (creds: {
+  email: string;
+}): Promise<ForgotPassworResponse> => {
+  const response = await ApiService.post("/api/auth/password/forgot", creds);
+  return response.data;
+};
+
+export const resetPassword = async (
+  creds: ResetPasswordType
+): Promise<ResetPassworResponse> => {
+  const response = await ApiService.post("/api/auth/password/reset", creds);
   return response.data;
 };

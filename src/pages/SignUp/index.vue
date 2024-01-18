@@ -205,7 +205,7 @@ const handleAccountCheck = async (
         true,
         "Ok"
       ).then(function () {
-        handleNavigate("sign-in");
+        return handleNavigate("sign-in");
       });
     } else if (linkAccount) {
       Swal.ConfirmCancel(
@@ -221,8 +221,10 @@ const handleAccountCheck = async (
         } else {
           window.location.reload();
         }
+        return;
       });
     }
+    fn();
   } catch (error) {
     return Promise.reject(error);
   }

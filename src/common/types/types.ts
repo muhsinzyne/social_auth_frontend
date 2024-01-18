@@ -41,3 +41,21 @@ export interface AccountTypeResponse extends CommonErrorResponse {
     login: boolean;
   };
 }
+
+export interface ResetPasswordType {
+  id: string;
+  token: string;
+  newPassword: string;
+}
+
+export interface ForgotPassworResponse extends CommonErrorResponse {
+  data: {
+    mailSent: boolean;
+  };
+}
+
+export interface ResetPassworResponse extends CommonErrorResponse {
+  data: {
+    resetPassword: boolean;
+  };
+}

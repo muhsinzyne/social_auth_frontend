@@ -5,6 +5,8 @@ import SignIn from "@/pages/SignIn/index.vue";
 import SignUp from "@/pages/SignUp/index.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
 import Dashboard from "@/pages/Dashboard/index.vue";
+import ForgotPassword from "@/pages/ForgotPassword/index.vue";
+import ResetPassword from "@/pages/ResetPassword/index.vue";
 
 import { checkIfIsAuthenticated } from "@/core/services/JwtService";
 
@@ -33,6 +35,34 @@ const routes = [
         component: SignIn,
         meta: {
           pageTitle: "Sign In",
+        },
+      },
+    ],
+  },
+  {
+    path: "/forgot-password",
+    component: AuthLayout,
+    children: [
+      {
+        path: "/forgot-password",
+        name: "forgot-password",
+        component: ForgotPassword,
+        meta: {
+          pageTitle: "Forgot Password",
+        },
+      },
+    ],
+  },
+  {
+    path: "/reset-password/:id/:token",
+    component: AuthLayout,
+    children: [
+      {
+        path: "",
+        name: "reset-password",
+        component: ResetPassword,
+        meta: {
+          pageTitle: "Reset Password",
         },
       },
     ],

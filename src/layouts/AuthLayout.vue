@@ -32,8 +32,8 @@
         <!--begin::Logo-->
         <router-link to="/" class="mb-0 lg:mb-4">
           <img
-            class="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            src="../assets/Otpless.webp"
+            class="w-auto h-full static lg:max-w-[90%]"
             alt="logo"
           />
         </router-link>

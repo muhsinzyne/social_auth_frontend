@@ -15,4 +15,15 @@ export const ERRORS = {
     code: 409,
     message: "Duplicate User",
   },
+  INVALID_TOKEN: {
+    code: 401,
+    ACCESS: {
+      expired: "Access Token Expired",
+      message: "Invalid Access Token",
+    },
+    REFRESH: {
+      expired: "Refresh Token Expired",
+      message: "Invalid Refresh Token",
+    },
+  },
 };
