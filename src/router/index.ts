@@ -84,7 +84,7 @@ const router = createRouter({
 });
 
 // Add a navigation guard to check authentication before each route change
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
   if (!to.meta.requiresAuth) next(); // Proceed to the next route
 
   const isAuthenticated = await checkIfIsAuthenticated();

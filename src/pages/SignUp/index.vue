@@ -231,7 +231,7 @@ const handleAccountCheck = async (
 };
 
 // Handling signUp functionalities
-const onSubmitRegister = async (values) => {
+const onSubmitRegister = async (values: any) => {
   if (values) {
     try {
       submitButton.value!.disabled = true;
