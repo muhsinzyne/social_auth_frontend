@@ -1,8 +1,6 @@
 <template lang="html">
-  <header class="md:hidden">
-    <div
-      class="flex flex-row justify-between gap-6 p-4 text-white bg-blue-950 h-full"
-    >
+  <header class="md:hidden sticky top-0 z-50 h-[10%]">
+    <div class="flex flex-row justify-between gap-6 p-4 text-white bg-blue-950">
       <div class="flex justify-start items-center gap-2">
         <img
           src="https://flowbite.com/docs/images/logo.svg"

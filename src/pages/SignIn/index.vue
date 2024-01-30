@@ -135,7 +135,7 @@ const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
 
         Swall.Timer("You have successfully Logged In!", "success");
 
-        handleNavigate("dashboard");
+        handleNavigate("apps");
       }
     } catch (error: any) {
       console.error(error);

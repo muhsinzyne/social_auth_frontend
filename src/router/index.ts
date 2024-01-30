@@ -4,9 +4,12 @@ import Home from "@/pages/Home/index.vue";
 import SignIn from "@/pages/SignIn/index.vue";
 import SignUp from "@/pages/SignUp/index.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
-import Dashboard from "@/pages/Dashboard/index.vue";
+import Dashboard from "@/layouts/Dashboard.vue";
 import ForgotPassword from "@/pages/ForgotPassword/index.vue";
 import ResetPassword from "@/pages/ResetPassword/index.vue";
+import Apps from "@/pages/Apps/index.vue";
+import NewApp from "@/pages/Apps/Components/NewApp/index.vue";
+import Organisations from "@/pages/Organisations/index.vue";
 
 import { checkIfIsAuthenticated } from "@/core/services/JwtService";
 
@@ -75,6 +78,51 @@ const routes = [
     meta: {
       requiresAuth: true, // Add this meta field to indicate authentication is required
     },
+  },
+  {
+    path: "/dashboard",
+    component: Dashboard,
+    children: [
+      {
+        path: "/dashboard/apps",
+        name: "apps",
+        component: Apps,
+        meta: {
+          pageTitle: "Apps",
+          requiresAuth: true, // Add this meta field to indicate authentication is required
+        },
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    component: Dashboard,
+    children: [
+      {
+        path: "/dashboard/apps/new",
+        name: "newApp",
+        component: NewApp,
+        meta: {
+          pageTitle: "New App",
+          requiresAuth: true, // Add this meta field to indicate authentication is required
+        },
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    component: Dashboard,
+    children: [
+      {
+        path: "/dashboard/organisations",
+        name: "organisations",
+        component: Organisations,
+        meta: {
+          pageTitle: "Organisations",
+          requiresAuth: true, // Add this meta field to indicate authentication is required
+        },
+      },
+    ],
   },
 ];
 

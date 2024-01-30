@@ -1,4 +1,10 @@
-<template lang="html">
+<script lang="ts" setup>
+import { handleNavigate } from "@/core/helpers/path";
+
+const pages = ["Apps", "Organisations"];
+</script>
+
+<template>
   <div
     class="bg-blue-950 w-auto h-full max-md:hidden grid grid-rows-[0fr_1fr_0fr]"
   >
@@ -21,9 +27,7 @@
             v-for="(item, index) in pages"
             class="cursor-pointer hover:text-white"
             v-bind:class="{ 'mb-4': index === 0 }"
-            @click="
-              updateCurrentPage && updateCurrentPage(`${item.toLowerCase()}`)
-            "
+            @click="handleNavigate(`${item.toLowerCase()}`)"
           >
             {{ item }}
           </li>
@@ -54,13 +58,3 @@
     </footer>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { defineProps } from "vue";
-
-const pages = ["Apps", "Organisations"];
-
-defineProps({
-  updateCurrentPage: Function,
-});
-</script>
