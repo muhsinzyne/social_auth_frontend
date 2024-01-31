@@ -106,7 +106,7 @@
 import { ref } from "vue";
 import * as Yup from "yup";
 import { ERRORS } from "@/utils/constants";
-import { handleNavigate } from "@/core/helpers/path";
+import { addToSessionStorage, handleNavigate } from "@/core/helpers/path";
 import { saveToken } from "@/core/services/JwtService";
 import { userLogin } from "@/core/services/routes/auth";
 import { ErrorMessage, Field, Form } from "vee-validate";
@@ -132,6 +132,8 @@ const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
 
       if (success) {
         data && saveToken(data.accessToken);
+
+        data && addToSessionStorage("userId", data.user.id.toString());
 
         Swall.Timer("You have successfully Logged In!", "success");
 

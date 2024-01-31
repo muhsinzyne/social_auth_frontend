@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import EmptyState from "../Apps/Components/EmptyState/index.vue";
 import AppsRender from "../Apps/Components/AppsRender/index.vue";
+import { state, RootState } from "@/store";
+
+const { userPreferences } = state as RootState;
+
+console.log(userPreferences, "userPREF");
 
 const customers = [
   {

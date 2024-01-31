@@ -6,6 +6,7 @@
     >
       <Sidebar />
       <div class="bg-blue-100 max-md:w-[100vw] h-full w-auto">
+        <Header />
         <router-view></router-view>
       </div>
     </div>
@@ -16,15 +17,24 @@
 import { getSingleUser } from "@/core/services/routes/user";
 import { onMounted, ref } from "vue";
 import Sidebar from "@/common/components/Sidebar/index.vue";
+import Header from "@/common/components/Header/index.vue";
+import { getFromSessionStorage } from "@/core/helpers/path";
+import { dispatch } from "@/store";
 
 const loading = ref(true);
 
+const userId = getFromSessionStorage("userId");
+
 onMounted(async () => {
-  try {
-    await getSingleUser("1");
-    loading.value = false;
-  } catch (error) {
-    loading.value = false;
+  if (userId) {
+    try {
+      const { data } = await getSingleUser(userId);
+      dispatch("addUserPrefferences", data?.user);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      loading.value = false;
+    }
   }
 });
 </script>

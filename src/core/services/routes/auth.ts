@@ -8,6 +8,7 @@ import {
   ResetPasswordType,
   ResetPassworResponse,
   ForgotPassworResponse,
+  CommonErrorResponse,
 } from "@/common/types/types";
 import ApiService from "../APIService";
 
@@ -59,5 +60,16 @@ export const resetPassword = async (
   creds: ResetPasswordType
 ): Promise<ResetPassworResponse> => {
   const response = await ApiService.post("/api/auth/password/reset", creds);
+  return response.data;
+};
+
+export const userLogout = async (): Promise<CommonErrorResponse> => {
+  const response = await ApiService.post(
+    "/api/auth/user/logout",
+    {},
+    {
+      withCredentials: true,
+    }
+  );
   return response.data;
 };

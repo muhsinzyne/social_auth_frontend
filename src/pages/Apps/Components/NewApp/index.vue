@@ -8,7 +8,7 @@
         class="w-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-white"
       >
         <form>
-          <div class="grid gap-6 mb-6 md:grid-cols-2">
+          <div class="grid gap-6 mb-6 lg:grid-cols-2">
             <div class="pr-6">
               <label
                 for="app_name"
@@ -47,23 +47,124 @@
                 class="block mb-2 text-sm font-medium text-gray-900"
                 >Set up web push or mobile push. You can set up more later.
               </label>
-
-              <div class="flex flex-row">
-                <div
-                  class="w-full max-w-[10rem] bg-white border border-gray-50 cursor-pointer rounded-md shadow dark:border-gray-300 hover:dark:border-indigo-400 hover:bg-indigo-100 flex flex-col gap-2 items-center justify-center"
-                >
-                  <img
-                    class="px-6 pt-6 rounded-t-lg"
-                    src="../../../../assets/whatsapp.svg"
-                    alt="product image"
+              <ul class="flex w-full gap-3 flex-wrap">
+                <li class="max-sm:w-full">
+                  <input
+                    type="radio"
+                    id="hosting-small"
+                    name="hosting"
+                    value="hosting-small"
+                    class="hidden peer"
+                    required
                   />
                   <label
-                    for="organization"
-                    class="block mb-2 text-sm font-medium text-gray-900 pb-6"
-                    >Whatsapp
+                    for="hosting-small"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                  >
+                    <div
+                      class="flex flex-col gap-2 items-center justify-center p-8"
+                    >
+                      <img
+                        class="px-6 rounded-t-lg"
+                        src="../../../../assets/whatsapp.svg"
+                        alt="product image"
+                      />
+                      <label
+                        for="organization"
+                        class="block text-sm font-medium text-gray-900"
+                        >Whatsapp
+                      </label>
+                    </div>
                   </label>
-                </div>
-              </div>
+                </li>
+                <li class="max-sm:w-full">
+                  <input
+                    type="radio"
+                    id="hosting-small2"
+                    name="hosting"
+                    value="hosting-small2"
+                    class="hidden peer"
+                    required
+                  />
+                  <label
+                    for="hosting-small2"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                  >
+                    <div
+                      class="flex flex-col gap-2 items-center justify-center p-8"
+                    >
+                      <img
+                        class="px-6 rounded-t-lg"
+                        src="../../../../assets/whatsapp.svg"
+                        alt="product image"
+                      />
+                      <label
+                        for="organization"
+                        class="block text-sm font-medium text-gray-900"
+                        >Whatsapp
+                      </label>
+                    </div>
+                  </label>
+                </li>
+                <li class="max-sm:w-full">
+                  <input
+                    type="radio"
+                    id="hosting-small3"
+                    name="hosting"
+                    value="hosting-small3"
+                    class="hidden peer"
+                    required
+                  />
+                  <label
+                    for="hosting-small3"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                  >
+                    <div
+                      class="flex flex-col gap-2 items-center justify-center p-8"
+                    >
+                      <img
+                        class="px-6 rounded-t-lg"
+                        src="../../../../assets/whatsapp.svg"
+                        alt="product image"
+                      />
+                      <label
+                        for="organization"
+                        class="block text-sm font-medium text-gray-900"
+                        >Whatsapp
+                      </label>
+                    </div>
+                  </label>
+                </li>
+                <li class="max-sm:w-full">
+                  <input
+                    type="radio"
+                    id="hosting-small4"
+                    name="hosting"
+                    value="hosting-small4"
+                    class="hidden peer"
+                    required
+                  />
+                  <label
+                    for="hosting-small4"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                  >
+                    <div
+                      class="flex flex-col gap-2 items-center justify-center p-8"
+                    >
+                      <img
+                        class="px-6 rounded-t-lg"
+                        src="../../../../assets/whatsapp.svg"
+                        alt="product image"
+                      />
+                      <label
+                        for="organization"
+                        class="block text-sm font-medium text-gray-900"
+                        >Whatsapp
+                      </label>
+                    </div>
+                  </label>
+                </li>
+              </ul>
             </div>
           </div>
         </form>

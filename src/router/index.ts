@@ -12,6 +12,7 @@ import NewApp from "@/pages/Apps/Components/NewApp/index.vue";
 import Organisations from "@/pages/Organisations/index.vue";
 
 import { checkIfIsAuthenticated } from "@/core/services/JwtService";
+import { handleNavigate } from "@/core/helpers/path";
 
 const routes = [
   {
@@ -140,7 +141,11 @@ router.beforeEach(async (to, _, next) => {
     // If the route requires authentication and the user is not authenticated, redirect to the login page or another route
     next("/sign-in");
   } else {
-    next(); // Proceed to the next route
+    if (to.fullPath === "/dashboard") {
+      handleNavigate("apps");
+    } else {
+      next(); // Proceed to the next route
+    }
   }
 });
 

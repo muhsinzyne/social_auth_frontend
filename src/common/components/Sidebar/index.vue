@@ -1,5 +1,25 @@
 <script lang="ts" setup>
-import { handleNavigate } from "@/core/helpers/path";
+import { handleNavigate, removeFromSessionStorage } from "@/core/helpers/path";
+import { userLogout } from "@/core/services/routes/auth";
+import { ref } from "vue";
+
+const showProfileOptions = ref(false);
+
+const handleShowProfileOptions = () =>
+  (showProfileOptions.value = !showProfileOptions.value);
+
+// Function for handling user logout
+const handleLogout = async () => {
+  try {
+    await userLogout();
+    // Removing userId from session
+    removeFromSessionStorage("userId");
+    // Navigating to sign-in page
+    handleNavigate("sign-in");
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const pages = ["Apps", "Organisations"];
 </script>
@@ -37,10 +57,30 @@ const pages = ["Apps", "Organisations"];
         ></div>
       </div>
     </section>
+
     <footer>
       <div class="p-8">
         <div
+          v-if="showProfileOptions"
+          class="mb-4 max-md:hidden w-44 p-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-white dark:border-gray-600 dark:text-gray-900"
+        >
+          <button
+            type="button"
+            class="w-40 p-2 font-medium text-left rtl:text-right border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-indigo-100"
+          >
+            Profile
+          </button>
+          <button
+            @click="handleLogout"
+            type="button"
+            class="w-40 p-2 font-medium text-left rtl:text-right border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-indigo-100"
+          >
+            Logout
+          </button>
+        </div>
+        <div
           class="bg-blue-900 cursor-pointer w-8 h-8 grid place-items-center rounded-full"
+          @click="handleShowProfileOptions"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

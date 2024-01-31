@@ -1,4 +1,4 @@
-interface CommonErrorResponse {
+export interface CommonErrorResponse {
   success: boolean;
   error?: string;
 }
@@ -58,4 +58,24 @@ export interface ResetPassworResponse extends CommonErrorResponse {
   data: {
     resetPassword: boolean;
   };
+}
+
+export interface SingleUserResponse extends CommonErrorResponse {
+  data?: {
+    user: {
+      id: number;
+      email: string;
+      googleId: string;
+      createdAt: Date;
+      updatedAt: Date;
+    };
+  };
+}
+
+export interface UserPreferences {
+  id: number;
+  email: string;
+  googleId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
