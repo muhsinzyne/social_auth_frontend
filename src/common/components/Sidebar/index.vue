@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { handleNavigate, removeFromSessionStorage } from "@/core/helpers/path";
+import { handleNavigate } from "@/core/helpers/path";
+import { deleteCookie } from "@/core/services/JwtService";
 import { userLogout } from "@/core/services/routes/auth";
 import { ref } from "vue";
 
@@ -12,8 +13,8 @@ const handleShowProfileOptions = () =>
 const handleLogout = async () => {
   try {
     await userLogout();
-    // Removing userId from session
-    removeFromSessionStorage("userId");
+    // Removing userId from cookie
+    deleteCookie("userId");
     // Navigating to sign-in page
     handleNavigate("sign-in");
   } catch (error) {

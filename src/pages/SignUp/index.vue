@@ -223,8 +223,9 @@ const handleAccountCheck = async (
         }
         return;
       });
+    } else {
+      fn();
     }
-    fn();
   } catch (error) {
     return Promise.reject(error);
   }
@@ -257,7 +258,7 @@ const onSubmitRegister = async (values: any) => {
 
         if (success) {
           Swal.ConfirmCancel(
-            "You have successfully Registered!",
+            "You have successfully Registered, Sign In!",
             "success",
             true,
             "Ok"

@@ -18,12 +18,13 @@ import { getSingleUser } from "@/core/services/routes/user";
 import { onMounted, ref } from "vue";
 import Sidebar from "@/common/components/Sidebar/index.vue";
 import Header from "@/common/components/Header/index.vue";
-import { getFromSessionStorage } from "@/core/helpers/path";
+import { handleNavigate } from "@/core/helpers/path";
 import { dispatch } from "@/store";
+import { getCookie } from "@/core/services/JwtService";
 
 const loading = ref(true);
 
-const userId = getFromSessionStorage("userId");
+const userId = getCookie("userId");
 
 onMounted(async () => {
   if (userId) {
@@ -35,6 +36,8 @@ onMounted(async () => {
     } finally {
       loading.value = false;
     }
+  } else {
+    handleNavigate("sign-in");
   }
 });
 </script>

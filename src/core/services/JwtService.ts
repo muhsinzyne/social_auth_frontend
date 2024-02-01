@@ -24,7 +24,7 @@ export const destroyToken = (): void => {
   window.localStorage.removeItem(ID_TOKEN_KEY);
 };
 
-function getCookie(name: string): string {
+export function getCookie(name: string): string {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
 
@@ -36,8 +36,8 @@ function getCookie(name: string): string {
   return "";
 }
 
-export const deleteCookie = (): void => {
-  document.cookie = `${ID_TOKEN_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+export const deleteCookie = (TOKEN_KEY: string = ID_TOKEN_KEY): void => {
+  document.cookie = `${TOKEN_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
 export async function checkIfIsAuthenticated(): Promise<boolean> {

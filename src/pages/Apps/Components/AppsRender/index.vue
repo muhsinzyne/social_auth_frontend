@@ -9,7 +9,7 @@ const selectedProduct = ref();
 const metaKey = ref(true);
 
 defineProps({
-  customers: Array,
+  apps: Array,
 });
 </script>
 
@@ -35,7 +35,7 @@ defineProps({
         class="w-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-white"
       >
         <DataTable
-          :value="customers"
+          :value="apps"
           paginator
           :rows="5"
           :rowsPerPageOptions="[5, 10, 20, 50]"
@@ -46,11 +46,13 @@ defineProps({
           :metaKeySelection="metaKey"
           dataKey="id"
         >
-          <Column field="name" header="Name"></Column>
-          <Column field="country.name" header="Plan"></Column>
-          <Column field="company" header="Total Subs"></Column>
-          <Column field="company" header="Active Subs"></Column>
-          <Column field="representative.name" header="Platforms"></Column>
+          <Column field="appName" header="Name"></Column>
+          <Column field="" header="Plan"
+            ><template #body=""> Free </template></Column
+          >
+          <Column field="organization" header="Organization"></Column>
+          <Column field="source" header="Source"></Column>
+          <Column field="userId" header="Platforms"></Column>
           <Column style="flex: 0 0 4rem">
             <template #body="">
               <Button

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { handleNavigate, removeFromSessionStorage } from "@/core/helpers/path";
+import { handleNavigate } from "@/core/helpers/path";
+import { deleteCookie } from "@/core/services/JwtService";
 import { userLogout } from "@/core/services/routes/auth";
 import { ref } from "vue";
 
@@ -12,8 +13,8 @@ const handleShowProfileOptions = () =>
 const handleLogout = async () => {
   try {
     await userLogout();
-    // Removing userId from session
-    removeFromSessionStorage("userId");
+    // Removing userId from cookie
+    deleteCookie("userId");
     // Navigating to sign-in page
     handleNavigate("sign-in");
   } catch (error) {
@@ -23,7 +24,7 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <header class="md:hidden sticky top-0 z-50 h-[10%]">
+  <header class="md:hidden sticky top-0 z-50 md:h-[10%] min-md;h-[5%]">
     <div class="flex flex-row justify-between gap-6 p-4 text-white bg-blue-950">
       <div class="flex justify-start items-center gap-2">
         <img
