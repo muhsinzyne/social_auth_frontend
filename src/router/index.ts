@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { checkIfIsAuthenticated } from "@/core/services/JwtService";
+import { handleNavigate } from "@/core/helpers/path";
+import { useRouteAuthenticated } from "@/common/composables/routeAuthenticated";
 
 import Home from "@/pages/Home/index.vue";
 import SignIn from "@/pages/SignIn/index.vue";
 import SignUp from "@/pages/SignUp/index.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
-import Dashboard from "@/layouts/Dashboard.vue";
 import ForgotPassword from "@/pages/ForgotPassword/index.vue";
 import ResetPassword from "@/pages/ResetPassword/index.vue";
 import Apps from "@/pages/Apps/index.vue";
 import NewApp from "@/pages/Apps/Components/NewApp/index.vue";
 import Organisations from "@/pages/Organisations/index.vue";
 
-import { checkIfIsAuthenticated } from "@/core/services/JwtService";
-import { handleNavigate } from "@/core/helpers/path";
+const { routeAuthenticated } = useRouteAuthenticated();
 
 const routes = [
   {
@@ -25,6 +26,7 @@ const routes = [
         component: SignUp,
         meta: {
           pageTitle: "Sign Up",
+          layout: "empty",
         },
       },
     ],
@@ -39,6 +41,7 @@ const routes = [
         component: SignIn,
         meta: {
           pageTitle: "Sign In",
+          layout: "empty",
         },
       },
     ],
@@ -53,6 +56,7 @@ const routes = [
         component: ForgotPassword,
         meta: {
           pageTitle: "Forgot Password",
+          layout: "empty",
         },
       },
     ],
@@ -67,63 +71,46 @@ const routes = [
         component: ResetPassword,
         meta: {
           pageTitle: "Reset Password",
+          layout: "empty",
         },
       },
     ],
   },
-  { path: "/", name: "home", component: Home },
   {
-    path: "/dashboard",
-    name: "dashboard",
-    component: Dashboard,
+    path: "/",
+    name: "home",
+    component: Home,
     meta: {
+      pageTitle: "Home",
+      layout: "empty",
+    },
+  },
+  {
+    path: "/dashboard/apps",
+    name: "apps",
+    component: Apps,
+    meta: {
+      pageTitle: "Apps",
       requiresAuth: true, // Add this meta field to indicate authentication is required
     },
   },
   {
-    path: "/dashboard",
-    component: Dashboard,
-    children: [
-      {
-        path: "/dashboard/apps",
-        name: "apps",
-        component: Apps,
-        meta: {
-          pageTitle: "Apps",
-          requiresAuth: true, // Add this meta field to indicate authentication is required
-        },
-      },
-    ],
+    path: "/dashboard/apps/new",
+    name: "newApp",
+    component: NewApp,
+    meta: {
+      pageTitle: "New App",
+      requiresAuth: true, // Add this meta field to indicate authentication is required
+    },
   },
   {
-    path: "/dashboard",
-    component: Dashboard,
-    children: [
-      {
-        path: "/dashboard/apps/new",
-        name: "newApp",
-        component: NewApp,
-        meta: {
-          pageTitle: "New App",
-          requiresAuth: true, // Add this meta field to indicate authentication is required
-        },
-      },
-    ],
-  },
-  {
-    path: "/dashboard",
-    component: Dashboard,
-    children: [
-      {
-        path: "/dashboard/organisations",
-        name: "organisations",
-        component: Organisations,
-        meta: {
-          pageTitle: "Organisations",
-          requiresAuth: true, // Add this meta field to indicate authentication is required
-        },
-      },
-    ],
+    path: "/dashboard/organisations",
+    name: "organisations",
+    component: Organisations,
+    meta: {
+      pageTitle: "Organisations",
+      requiresAuth: true, // Add this meta field to indicate authentication is required
+    },
   },
 ];
 
@@ -134,18 +121,24 @@ const router = createRouter({
 
 // Add a navigation guard to check authentication before each route change
 router.beforeEach(async (to, _, next) => {
-  if (!to.meta.requiresAuth) next(); // Proceed to the next route
+  if (to.fullPath === "/dashboard") {
+    return handleNavigate("apps");
+  }
+
+  if (!to.meta.requiresAuth) {
+    routeAuthenticated.value = true;
+    return next();
+  }
+  // Proceed to the next route
 
   const isAuthenticated = await checkIfIsAuthenticated();
+  routeAuthenticated.value = true;
+
   if (!isAuthenticated) {
     // If the route requires authentication and the user is not authenticated, redirect to the login page or another route
     next("/sign-in");
   } else {
-    if (to.fullPath === "/dashboard") {
-      handleNavigate("apps");
-    } else {
-      next(); // Proceed to the next route
-    }
+    next(); // Proceed to the next route
   }
 });
 

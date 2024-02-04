@@ -1,13 +1,12 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useSidebar } from "../../composables/useSidebar";
 import { handleNavigate } from "@/core/helpers/path";
 import { deleteCookie } from "@/core/services/JwtService";
 import { userLogout } from "@/core/services/routes/auth";
-import { ref } from "vue";
 
-const showProfileOptions = ref(false);
-
-const handleShowProfileOptions = () =>
-  (showProfileOptions.value = !showProfileOptions.value);
+const dropdownOpen = ref(false);
+const { isOpen } = useSidebar();
 
 // Function for handling user logout
 const handleLogout = async () => {
@@ -24,55 +23,92 @@ const handleLogout = async () => {
 </script>
 
 <template>
-  <header class="md:hidden sticky top-0 z-50 md:h-[10%] min-md;h-[5%]">
-    <div class="flex flex-row justify-between gap-6 p-4 text-white bg-blue-950">
-      <div class="flex justify-start items-center gap-2">
-        <img
-          src="https://flowbite.com/docs/images/logo.svg"
-          class="h-8"
-          alt="Flowbite Logo"
-        />
-        <h1
-          class="text-base font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white"
-        >
-          SocialAuth
-        </h1>
-      </div>
-
-      <div
-        class="bg-blue-900 cursor-pointer w-8 h-8 grid place-items-center rounded-full"
-        @click="handleShowProfileOptions"
+  <header
+    class="flex items-center justify-between px-6 py-4 bg-white border-b-2 shadow border-gray-200 dark:border-gray-200"
+  >
+    <div class="flex items-center">
+      <button
+        class="text-gray-500 focus:outline-none lg:hidden"
+        @click="isOpen = true"
       >
         <svg
+          class="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 448 512"
-          fill="#fff"
-          height="14"
-          width="14"
         >
           <path
-            d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"
+            d="M4 6H20M4 12H20M4 18H11"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
           />
         </svg>
+      </button>
+    </div>
+
+    <div class="flex items-center">
+      <div class="relative">
+        <button
+          class="relative z-10 grid w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none place-items-center"
+          @click="dropdownOpen = !dropdownOpen"
+        >
+          <svg
+            class="w-6 h-6 text-gray-800 dark:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              fill="#d3d3d3"
+              d="M12 20a8 8 0 0 1-5-1.8v-.6c0-1.8 1.5-3.3 3.3-3.3h3.4c1.8 0 3.3 1.5 3.3 3.3v.6a8 8 0 0 1-5 1.8ZM2 12a10 10 0 1 1 10 10A10 10 0 0 1 2 12Zm10-5a3.3 3.3 0 0 0-3.3 3.3c0 1.7 1.5 3.2 3.3 3.2 1.8 0 3.3-1.5 3.3-3.3C15.3 8.6 13.8 7 12 7Z"
+              clip-rule="evenodd"
+              height="28"
+              width="28"
+            />
+          </svg>
+        </button>
+
+        <div
+          v-show="dropdownOpen"
+          class="fixed inset-0 z-10 w-full h-full"
+          @click="dropdownOpen = false"
+        />
+
+        <transition
+          enter-active-class="transition duration-150 ease-out transform"
+          enter-from-class="scale-95 opacity-0"
+          enter-to-class="scale-100 opacity-100"
+          leave-active-class="transition duration-150 ease-in transform"
+          leave-from-class="scale-100 opacity-100"
+          leave-to-class="scale-95 opacity-0"
+        >
+          <div
+            v-show="dropdownOpen"
+            class="absolute right-0 z-20 w-48 py-2 mt-2 bg-white rounded-md shadow-xl"
+          >
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
+              >Profile</a
+            >
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
+              >Products</a
+            >
+            <div
+              @click="handleLogout"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
+            >
+              Log out
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
   </header>
-  <div
-    v-if="showProfileOptions"
-    class="mb-4 absolute right-0 mr-1 top-[66px] md:hidden w-44 p-2 text-sm font-medium text-gray-900 bg-white dark:text-gray-900 border border-gray-200 rounded-lg shadow dark:bg-white dark:border-white"
-  >
-    <button
-      type="button"
-      class="w-40 p-2 font-medium text-left rtl:text-right border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-indigo-100"
-    >
-      Profile
-    </button>
-    <button
-      @click="handleLogout"
-      type="button"
-      class="w-40 p-2 font-medium text-left rtl:text-right border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-indigo-100"
-    >
-      Logout
-    </button>
-  </div>
 </template>

@@ -38,11 +38,9 @@ const handleStepOne = async (values: any) => {
 </script>
 
 <template>
-  <div class="p-8">
-    <div class="flex items-center justify-between">
-      <div class="font-normal text-2xl"><h1>New App</h1></div>
-    </div>
-    <div class="pt-5">
+  <div class="mt-8">
+    <div class="mt-6">
+      <h2 class="text-xl font-semibold leading-tight text-gray-700">New App</h2>
       <Form
         novalidate
         @submit="handleStepOne"
@@ -50,20 +48,18 @@ const handleStepOne = async (values: any) => {
         :validation-schema="stepOneValidation"
       >
         <div
-          class="w-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-white md:max-h-[70vh] md:overflow-y-auto"
+          class="mt-4 p- rounded-md shadow-md w-auto p-6 bg-white border border-gray-200 dark:bg-white dark:border-white md:max-h-[70vh] md:overflow-y-auto"
         >
           <div class="grid gap-6 mb-6 lg:grid-cols-2">
             <div class="pr-6">
-              <label
-                for="app_name"
-                class="block mb-2 text-sm font-medium text-gray-900"
+              <label for="app_name" class="text-gray-700"
                 >Name of your app</label
               >
               <Field
                 type="text"
                 id="app_name"
                 name="app_name"
-                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 placeholder-gray-400 focus:placeholder-gray-600"
+                class="w-full mt-2 border-gray-200 rounded-md focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
                 placeholder="App Name"
                 autocomplete="off"
                 required
@@ -74,19 +70,18 @@ const handleStepOne = async (values: any) => {
             </div>
             <div class="max-md:hidden"></div>
             <div class="pr-6">
-              <label
-                for="organization"
-                class="block mb-2 text-sm font-medium text-gray-900"
+              <label for="organization" class="text-gray-700"
                 >What organization should it belong to?
               </label>
               <Field
                 id="organizations"
-                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 placeholder-gray-400 focus:placeholder-gray-600"
+                class="w-full mt-2 border-gray-200 rounded-md focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
                 name="organization"
                 as="select"
                 :value="organizationOptions[0].value"
               >
                 <option
+                  class="w-full mt-2 border-gray-200 rounded-md focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
                   v-for="(option, index) in organizationOptions"
                   :key="index"
                   :value="option.value"
@@ -103,15 +98,13 @@ const handleStepOne = async (values: any) => {
             </div>
             <div class="max-md:hidden"></div>
             <div>
-              <label
-                for="source"
-                class="block mb-2 text-sm font-medium text-gray-900"
+              <label for="source" class="text-gray-700"
                 >Set up web push or mobile push. You can set up more later.
               </label>
               <div>
                 <ErrorMessage name="source" class="text-red-600 text-sm" />
               </div>
-              <ul class="flex w-full gap-3 flex-wrap">
+              <ul class="flex w-full gap-3 flex-wrap mt-3">
                 <li class="max-sm:w-full">
                   <Field
                     type="radio"
@@ -123,7 +116,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_1"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -133,9 +126,7 @@ const handleStepOne = async (values: any) => {
                         src="../../../../assets/whatsapp.svg"
                         alt="product image"
                       />
-                      <label
-                        for="organization"
-                        class="block text-sm font-medium text-gray-900"
+                      <label for="organization" class="text-gray-700"
                         >Whatsapp
                       </label>
                     </div>
@@ -152,7 +143,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_2"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -162,9 +153,7 @@ const handleStepOne = async (values: any) => {
                         src="../../../../assets/whatsapp.svg"
                         alt="product image"
                       />
-                      <label
-                        for="organization"
-                        class="block text-sm font-medium text-gray-900"
+                      <label for="organization" class="text-gray-700"
                         >Whatsapp
                       </label>
                     </div>
@@ -181,7 +170,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_3"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -191,9 +180,7 @@ const handleStepOne = async (values: any) => {
                         src="../../../../assets/whatsapp.svg"
                         alt="product image"
                       />
-                      <label
-                        for="organization"
-                        class="block text-sm font-medium text-gray-900"
+                      <label for="organization" class="text-gray-700"
                         >Whatsapp
                       </label>
                     </div>
@@ -210,7 +197,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_4"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-300 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -220,9 +207,7 @@ const handleStepOne = async (values: any) => {
                         src="../../../../assets/whatsapp.svg"
                         alt="product image"
                       />
-                      <label
-                        for="organization"
-                        class="block text-sm font-medium text-gray-900"
+                      <label for="organization" class="text-gray-700"
                         >Whatsapp
                       </label>
                     </div>
@@ -234,13 +219,25 @@ const handleStepOne = async (values: any) => {
         </div>
         <div class="pt-3">
           <button
-            id="app_registration_step_1_form"
-            ref="submitButton"
             type="submit"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex items-center justify-center gap-2"
+            class="flex items-center px-2 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
           >
-            <span>Next Step </span>
-            <span class="pi pi-angle-right text-white"></span>
+            <span class="mx-1">Next Step</span>
+            <svg
+              class="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m9 5 7 7-7 7"
+              />
+            </svg>
           </button>
         </div>
       </Form>

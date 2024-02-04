@@ -11,6 +11,8 @@ const { userPreferences } = state as RootState;
 
 console.log(userPreferences, "userPREF");
 
+const isLoading = ref<boolean>(true);
+
 const apps = ref<Array<AppType>>([]);
 
 onMounted(async () => {
@@ -21,11 +23,15 @@ onMounted(async () => {
   } catch (error) {
     console.error(error);
     Swall.Timer("Somethig went wrong! try after some time.", "warning");
+  } finally {
+    isLoading.value = false;
   }
 });
 </script>
 
 <template>
-  <EmptyState v-if="!Boolean(apps.length > 0)" />
-  <AppsRender v-if="Boolean(apps.length > 0)" :apps="apps" />
+  <div v-if="!isLoading">
+    <EmptyState v-if="!Boolean(apps.length > 0)" />
+    <AppsRender v-if="Boolean(apps.length > 0)" :apps="apps" />
+  </div>
 </template>
