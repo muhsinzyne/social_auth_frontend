@@ -18,3 +18,11 @@ export const getAllApps = async (): Promise<GetAllAppsResponse> => {
   const response = await ApiService.get("/api/app");
   return response.data;
 };
+
+export const updateApp = async (
+  payload: Partial<AppType>
+): Promise<CommonErrorResponse> => {
+  ApiService.setHeader();
+  const response = await ApiService.put("/api/app", payload);
+  return response.data;
+};

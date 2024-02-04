@@ -3,16 +3,59 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import { ref, defineProps } from "vue";
+import * as Yup from "yup";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import { handleNavigate } from "@/core/helpers/path";
+import Modal from "@/common/components/Modal/index.vue";
+import { AppType } from "@/common/types/types";
+import { updateApp } from "@/core/services/routes/app";
 
 const selectedProduct = ref();
 const metaKey = ref(true);
-const showEditModal = ref(false);
-const selectedRow = ref(-1);
+const selectedRow = ref("");
+const openEditModal = ref(false);
+const curentData = ref<AppType | any>({});
+const disabled = ref<boolean>(false);
 
-defineProps({
+let currentAppName = curentData.value.appName || "";
+
+const appNameValidation = Yup.object().shape({
+  appName: Yup.string().min(3).required().label("App Name"),
+});
+
+const setCurrentData = (data: AppType) => {
+  curentData.value = data;
+  currentAppName = data.appName;
+  openEditModal.value = true;
+};
+
+const { apps } = defineProps({
   apps: Array,
 });
+
+const setEditOpen = (val: boolean) => (openEditModal.value = val);
+
+const handleEditAppName = async (values: any) => {
+  if (values) {
+    const payload: Partial<AppType> = {
+      appId: curentData.value.appId,
+      appName: values.appName,
+    };
+    console.log(curentData.value, "P");
+
+    try {
+      disabled.value = true;
+      await updateApp(payload);
+      curentData.value.appName = payload.appName;
+      openEditModal.value = false;
+      selectedRow.value = "";
+    } catch (error) {
+      console.error(error);
+    } finally {
+      disabled.value = false;
+    }
+  }
+};
 </script>
 
 <template>
@@ -169,7 +212,7 @@ defineProps({
             >
               <template #body="{ data }">
                 <Button
-                  @click="selectedRow = data.id"
+                  @click="selectedRow = data.appId"
                   type="button"
                   :icon="'pi pi-ellipsis-v'"
                   text
@@ -177,9 +220,9 @@ defineProps({
                 />
 
                 <div
-                  v-show="selectedRow === data.id"
+                  v-show="selectedRow === data.appId"
                   class="fixed inset-0 z-10 w-full h-full"
-                  @click="selectedRow = -1"
+                  @click="selectedRow = ''"
                 />
                 <transition
                   enter-active-class="transition duration-150 ease-out transform"
@@ -190,7 +233,7 @@ defineProps({
                   leave-to-class="scale-95 opacity-0"
                 >
                   <div
-                    v-show="selectedRow === data.id"
+                    v-show="selectedRow === data.appId"
                     class="fixed right-0 z-20 w-48 py-2 mt-2 mr-10 bg-white rounded shadow-xl border"
                   >
                     <div
@@ -200,10 +243,10 @@ defineProps({
                       Dashboard
                     </div>
                     <div
-                      href="#"
+                      @click="setCurrentData(data)"
                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
                     >
-                      Edit
+                      Rename
                     </div>
                     <div
                       href="#"
@@ -216,6 +259,37 @@ defineProps({
               </template>
             </Column>
           </DataTable>
+          <Form
+            novalidate
+            @submit="handleEditAppName"
+            :validation-schema="appNameValidation"
+          >
+            <Modal
+              :open="openEditModal"
+              :setOpen="setEditOpen"
+              :title="'Edit App Name'"
+              :cancel-button-props="{ disabled }"
+              :ok-button-props="{ disabled }"
+              ><template v-slot:body>
+                <div>
+                  <Field
+                    type="text"
+                    id="appName"
+                    name="appName"
+                    v-model="currentAppName"
+                    class="w-full mt-2 border-gray-200 rounded-md focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
+                    placeholder="App Name"
+                    autocomplete="off"
+                    required
+                  />
+                  <div>
+                    <ErrorMessage name="appName" class="text-red-600 text-sm" />
+                  </div>
+                </div>
+                <!-- <button type="submit">GGGG</button> -->
+              </template></Modal
+            >
+          </Form>
           <!-- <div class="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <span class="text-xs text-gray-900 xs:text-sm"
               >Showing 1 to 4 of 50 Entries</span
