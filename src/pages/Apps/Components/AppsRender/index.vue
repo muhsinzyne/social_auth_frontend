@@ -1,23 +1,26 @@
 <script lang="ts" setup>
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Button from "primevue/button";
+// import DataTable from "primevue/datatable";
+// import Column from "primevue/column";
 import { ref, defineProps } from "vue";
 import * as Yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { handleNavigate } from "@/core/helpers/path";
 import Modal from "@/common/components/Modal/index.vue";
+import Button from "@/common/components/Button/index.vue";
 import { AppType } from "@/common/types/types";
 import { updateApp } from "@/core/services/routes/app";
+import Swall from "@/core/helpers/swal"
 
-const selectedProduct = ref();
-const metaKey = ref(true);
+// const selectedProduct = ref();
+// const metaKey = ref(true);
 const selectedRow = ref("");
 const openEditModal = ref(false);
 const curentData = ref<AppType | any>({});
 const disabled = ref<boolean>(false);
 
 let currentAppName = curentData.value.appName || "";
+
+const appHeaders = ["Name", "Plan", "Organization", "Source","Platforms", ""]
 
 const appNameValidation = Yup.object().shape({
   appName: Yup.string().min(3).required().label("App Name"),
@@ -30,7 +33,7 @@ const setCurrentData = (data: AppType) => {
 };
 
 const { apps } = defineProps({
-  apps: Array,
+  apps: Array<AppType>,
 });
 
 const setEditOpen = (val: boolean) => (openEditModal.value = val);
@@ -41,14 +44,16 @@ const handleEditAppName = async (values: any) => {
       appId: curentData.value.appId,
       appName: values.appName,
     };
-    console.log(curentData.value, "P");
-
+    
     try {
       disabled.value = true;
       await updateApp(payload);
       curentData.value.appName = payload.appName;
       openEditModal.value = false;
       selectedRow.value = "";
+
+      Swall.Toast("App Name Changed Successfully!", "success")
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -62,13 +67,13 @@ const handleEditAppName = async (values: any) => {
   <div class="mt-8">
     <div class="mt-6">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold leading-tight text-gray-700">Apps</h2>
+        <h2 class="text-xl font-semibold leading-tight">Apps</h2>
         <button
           @click="handleNavigate('newApp')"
           class="flex items-center px-2 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
         >
           <svg
-            class="w-6 h-6 text-gray-800 dark:text-white"
+            class="w-6 h-6 text-white dark:text-white"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -104,70 +109,102 @@ const handleEditAppName = async (values: any) => {
 
       <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
-          <!-- <table class="min-w-full leading-normal">
+          <table class="min-w-full leading-normal">
             <thead>
-              <tr>
+              <tr >
                 <th
+                v-for="(header, index) in appHeaders"
                   class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
-                >
-                  Name
+                  :key="index"                >
+                {{header}}
                 </th>
-                <th
-                  class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
-                >
-                  Plan
-                </th>
-                <th
-                  class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
-                >
-                  Organizations
-                </th>
-                <th
-                  class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
-                >
-                  Source
-                </th>
-                <th
-                  class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
-                >
-                  Platforms
-                </th>
+               
               </tr>
             </thead>
             <tbody>
               <tr
-                v-for="(u, index) in apps"
+                v-for="(data, index) in apps"
                 :key="index"
-                class="hover:bg-gray-200 cursor-pointer"
+                class=" cursor-pointer bg-white"
               >
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <td class="px-5 py-5 text-sm  border-b border-gray-200" >
                   <p class="text-gray-900 whitespace-nowrap">
-                    {{ u.appName }}
+                    {{ data.appName }}
                   </p>
                 </td>
 
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <td class="px-5 py-5 text-sm  border-b border-gray-200">
                   <p class="text-gray-900 whitespace-nowrap">Free</p>
                 </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <td class="px-5 py-5 text-sm  border-b border-gray-200">
                   <p class="text-gray-900 whitespace-nowrap">
-                    {{ u.organization }}
+                    {{ data.organization }}
                   </p>
                 </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <td class="px-5 py-5 text-sm e border-b border-gray-200">
                   <p class="text-gray-900 whitespace-nowrap">
-                    {{ u.source }}
+                    {{ data.source }}
                   </p>
                 </td>
-                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <td class="px-5 py-5 text-sm  border-b border-gray-200">
                   <p class="text-gray-900 whitespace-nowrap">
-                    {{ u.userId }}
+                    {{ data.userId }}
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-sm e border-b border-gray-200">
+                  <p class="text-gray-900 whitespace-nowrap">
+    
+                <Button :on-click="()=> selectedRow = data.appId" variant="none" 
+                  type="button"><template v-slot:left-icon>     <svg class="w-[21px] h-[21px] text-gray-800 dark:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <path stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M12 6h0m0 6h0m0 6h0"/>
+  </svg>
+         </template>
+                     </Button>
+
+                <div
+                  v-show="selectedRow === data.appId"
+                  class="fixed inset-0 z-10 w-full h-full"
+                  @click="selectedRow = ''"
+                />
+                    <transition
+                      enter-active-class="transition duration-150 ease-out transform"
+                      enter-from-class="scale-95 opacity-0"
+                      enter-to-class="scale-100 opacity-100"
+                      leave-active-class="transition duration-150 ease-in transform"
+                      leave-from-class="scale-100 opacity-100"
+                      leave-to-class="scale-95 opacity-0"
+                    >
+                      <div
+                        v-show="selectedRow === data.appId"
+                        class="fixed right-0 z-20 w-48 py-2 mt-2 mr-10 bg-white rounded shadow-xl border"
+                      >
+                        <div
+                          href="#"
+                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
+                        >
+                          Dashboard
+                        </div>
+                        <div
+                          @click="setCurrentData(data)"
+                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
+                        >
+                          Rename
+                        </div>
+                        <div
+                          href="#"
+                          class="block px-4 py-2 text-sm text-red-600 hover:bg-blue-600 hover:text-white"
+                        >
+                          Delete
+                        </div>
+                      </div>
+                    </transition>
                   </p>
                 </td>
               </tr>
             </tbody>
-          </table> -->
-          <DataTable
+          </table>
+
+          <!-- <DataTable
             :value="apps"
             paginator
             :rows="5"
@@ -258,7 +295,8 @@ const handleEditAppName = async (values: any) => {
                 </transition>
               </template>
             </Column>
-          </DataTable>
+          </DataTable> -->
+
           <Form
             novalidate
             @submit="handleEditAppName"
@@ -268,12 +306,14 @@ const handleEditAppName = async (values: any) => {
               :open="openEditModal"
               :setOpen="setEditOpen"
               :title="'Edit App Name'"
+              :closable="true"
               :cancel-button-props="{ disabled }"
               :ok-button-props="{ disabled }"
+              :on-cancel="()=> selectedRow = ''"
               ><template v-slot:body>
                 <div>
                   <Field
-                    type="text"
+                    variant="text"
                     id="appName"
                     name="appName"
                     v-model="currentAppName"
@@ -286,10 +326,12 @@ const handleEditAppName = async (values: any) => {
                     <ErrorMessage name="appName" class="text-red-600 text-sm" />
                   </div>
                 </div>
-                <!-- <button type="submit">GGGG</button> -->
               </template></Modal
             >
           </Form>
+
+          
+
           <!-- <div class="px-5 py-5 text-sm bg-white border-b border-gray-200">
             <span class="text-xs text-gray-900 xs:text-sm"
               >Showing 1 to 4 of 50 Entries</span

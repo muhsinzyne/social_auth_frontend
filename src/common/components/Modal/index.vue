@@ -14,6 +14,10 @@ defineProps({
     type: String,
     required: true,
   },
+  closable: {
+    type: Boolean,
+    required: false,
+  },
   okButtonProps: {
     type: Object as () => { disabled?: boolean },
     default: () => ({}),
@@ -21,6 +25,14 @@ defineProps({
   cancelButtonProps: {
     type: Object as () => { disabled?: boolean },
     default: () => ({}),
+  },
+  onOk: {
+    type: Function,
+    required: false,
+  },
+  onCancel: {
+    type: Function,
+    required: false,
   },
 });
 </script>
@@ -34,7 +46,6 @@ defineProps({
     >
       <div
         class="absolute w-full h-full bg-gray-900 opacity-50 modal-overlay"
-        @click="setOpen(!open)"
       />
 
       <div
@@ -62,22 +73,30 @@ defineProps({
           <!-- Title -->
           <div class="flex items-center justify-between pb-3">
             <p class="text-2xl font-bold">{{ title }}</p>
-            <div
-              class="z-50 cursor-pointer modal-close"
-              @click="setOpen(!open)"
-            >
-              <svg
-                class="text-black fill-current"
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-              >
-                <path
-                  d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
-                />
-              </svg>
-            </div>
+            <Button
+              v-if="closable"
+              variant="none"
+              type="button"
+              :on-click="
+                () => {
+                  onCancel && onCancel();
+                  setOpen(!open);
+                }
+              "
+              ><template v-slot:left-icon>
+                <svg
+                  class="text-black fill-current"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                >
+                  <path
+                    d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+                  />
+                </svg>
+              </template>
+            </Button>
           </div>
 
           <!-- Body -->
@@ -88,15 +107,23 @@ defineProps({
           <!-- Footer -->
           <div class="flex justify-end pt-2">
             <Button
-              type="close"
+              variant="none"
+              type="button"
               text="Close"
               :disabled="cancelButtonProps.disabled"
-              :onClick="() => setOpen(!open)"
+              :onClick="
+                () => {
+                  onCancel && onCancel();
+                  setOpen(!open);
+                }
+              "
             />
             <Button
-              type="primary"
+              variant="primary"
+              type="submit"
               text="Save"
               :disabled="okButtonProps.disabled"
+              :onClick="onOk"
             />
           </div>
         </div>

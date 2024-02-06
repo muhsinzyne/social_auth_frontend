@@ -84,8 +84,8 @@ export interface AppType {
   appName: string;
   organization: string;
   source: string;
-  appId?: string;
-  userId?: string;
+  appId: string;
+  userId: string;
 }
 
 export interface GetAllAppsResponse extends CommonErrorResponse {

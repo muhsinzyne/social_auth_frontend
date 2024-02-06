@@ -48,7 +48,7 @@
           <Field
             type="email"
             name="email"
-            class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            class="border text-sm rounded-lg block p-2.5 focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
             placeholder="Email"
             autocomplete="off"
             required
@@ -59,7 +59,7 @@
           <Field
             type="password"
             name="password"
-            class="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+            class="border text-sm rounded-lg block p-2.5 focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
             placeholder="Password"
             autocomplete="off"
             required

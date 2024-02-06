@@ -27,11 +27,11 @@ const handleStepOne = async (values: any) => {
     };
     try {
       await addApp(payload);
-      Swall.Timer("App Created Succesfully.", "success");
+      Swall.Toast("App Created Succesfully.", "success");
       handleNavigate("apps");
     } catch (error) {
       console.error(error);
-      Swall.Timer("Somethig went wrong! try after some time.", "warning");
+      Swall.Toast("Somethig went wrong! try after some time.", "warning");
     }
   }
 };
@@ -40,7 +40,7 @@ const handleStepOne = async (values: any) => {
 <template>
   <div class="mt-8">
     <div class="mt-6">
-      <h2 class="text-xl font-semibold leading-tight text-gray-700">New App</h2>
+      <h2 class="text-xl font-semibold leading-tight">New App</h2>
       <Form
         novalidate
         @submit="handleStepOne"
@@ -224,7 +224,7 @@ const handleStepOne = async (values: any) => {
           >
             <span class="mx-1">Next Step</span>
             <svg
-              class="w-6 h-6 text-gray-800 dark:text-white"
+              class="w-6 h-6 text-white dark:text-white"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

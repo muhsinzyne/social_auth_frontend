@@ -95,11 +95,6 @@ const handleLogout = async () => {
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
               >Profile</a
             >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
-              >Products</a
-            >
             <div
               @click="handleLogout"
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
