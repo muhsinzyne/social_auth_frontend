@@ -27,11 +27,22 @@ onMounted(async () => {
     isLoading.value = false;
   }
 });
+
+const removeApp = (appIdToDelete) => {
+  const index = apps.value.findIndex((app) => app.appId === appIdToDelete);
+  if (index !== -1) {
+    apps.value.splice(index, 1);
+  }
+};
 </script>
 
 <template>
-  <div v-if="!isLoading">
+  <div v-if="!isLoading" class="h-full">
     <EmptyState v-if="!Boolean(apps.length > 0)" />
-    <AppsRender v-if="Boolean(apps.length > 0)" :apps="apps" />
+    <AppsRender
+      v-if="Boolean(apps.length > 0)"
+      :apps="apps"
+      :removeApp="removeApp"
+    />
   </div>
 </template>

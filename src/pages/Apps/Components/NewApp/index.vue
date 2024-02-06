@@ -116,7 +116,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_1"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border rounded-lg cursor-pointer dark:border-gray-200 hover:border-indigo-400 peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -143,7 +143,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_2"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border rounded-lg cursor-pointer dark:border-gray-200 hover:border-indigo-400 peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -170,7 +170,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_3"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border rounded-lg cursor-pointer dark:border-gray-200 hover:border-indigo-400 peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"
@@ -197,7 +197,7 @@ const handleStepOne = async (values: any) => {
                   />
                   <label
                     for="source_4"
-                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border border-gray-50 rounded-lg cursor-pointer dark:border-gray-200 hover:dark:border-indigo-400 dark:peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
+                    class="max-sm:w-full inline-flex items-center justify-center text-gray-500 bg-white border rounded-lg cursor-pointer dark:border-gray-200 hover:border-indigo-400 peer-checked:bg-indigo-100 peer-checked:border-indigo-400 peer-checked:text-blue-600 hover:bg-indigo-100 dark:text-gray-400"
                   >
                     <div
                       class="flex flex-col gap-2 items-center justify-center p-8"

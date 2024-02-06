@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import Button from "@/common/components/Button/index.vue";
+
+enum ButonVariantType {
+  primary = "primary",
+  danger = "danger",
+  none = "none",
+}
+
 defineProps({
   open: {
     type: Boolean,
@@ -19,11 +26,19 @@ defineProps({
     required: false,
   },
   okButtonProps: {
-    type: Object as () => { disabled?: boolean },
+    type: Object as () => {
+      disabled?: boolean;
+      text?: string;
+      variant?: keyof typeof ButonVariantType;
+    },
     default: () => ({}),
   },
   cancelButtonProps: {
-    type: Object as () => { disabled?: boolean },
+    type: Object as () => {
+      disabled?: boolean;
+      text?: string;
+      variant?: ButonVariantType;
+    },
     default: () => ({}),
   },
   onOk: {
@@ -107,9 +122,11 @@ defineProps({
           <!-- Footer -->
           <div class="flex justify-end pt-2">
             <Button
-              variant="none"
+              :variant="
+                cancelButtonProps.variant ? cancelButtonProps.variant : 'none'
+              "
               type="button"
-              text="Close"
+              :text="cancelButtonProps.text ? cancelButtonProps.text : 'Close'"
               :disabled="cancelButtonProps.disabled"
               :onClick="
                 () => {
@@ -119,9 +136,9 @@ defineProps({
               "
             />
             <Button
-              variant="primary"
+              :variant="okButtonProps.variant"
               type="submit"
-              text="Save"
+              :text="okButtonProps.text ? okButtonProps.text : 'Save'"
               :disabled="okButtonProps.disabled"
               :onClick="onOk"
             />

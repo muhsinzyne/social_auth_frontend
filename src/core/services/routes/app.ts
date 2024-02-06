@@ -26,3 +26,9 @@ export const updateApp = async (
   const response = await ApiService.put("/api/app", payload);
   return response.data;
 };
+
+export const deleteApp = async (slug: string): Promise<CommonErrorResponse> => {
+  ApiService.setHeader();
+  const response = await ApiService.delete("/api/app", slug);
+  return response.data;
+};

@@ -8,54 +8,86 @@ import { handleNavigate } from "@/core/helpers/path";
 import Modal from "@/common/components/Modal/index.vue";
 import Button from "@/common/components/Button/index.vue";
 import { AppType } from "@/common/types/types";
-import { updateApp } from "@/core/services/routes/app";
-import Swall from "@/core/helpers/swal"
+import { updateApp, deleteApp } from "@/core/services/routes/app";
+import Swall from "@/core/helpers/swal";
 
 // const selectedProduct = ref();
 // const metaKey = ref(true);
-const selectedRow = ref("");
-const openEditModal = ref(false);
-const curentData = ref<AppType | any>({});
+const selectedRow = ref<string>("");
+const openEditModal = ref<boolean>(false);
+const currentData = ref<AppType | any>({});
 const disabled = ref<boolean>(false);
+const showDeleteModal = ref<boolean>(false);
 
-let currentAppName = curentData.value.appName || "";
+let currentAppName = currentData.value.appName || "";
 
-const appHeaders = ["Name", "Plan", "Organization", "Source","Platforms", ""]
+const appHeaders = ["Name", "Plan", "Organization", "Source", "Platforms", ""];
 
 const appNameValidation = Yup.object().shape({
   appName: Yup.string().min(3).required().label("App Name"),
 });
 
-const setCurrentData = (data: AppType) => {
-  curentData.value = data;
-  currentAppName = data.appName;
-  openEditModal.value = true;
+const setCurrentData = (data: AppType, action: "edit" | "delete") => {
+  currentData.value = data;
+  switch (action) {
+    case "edit":
+      currentAppName = data.appName;
+      openEditModal.value = true;
+      break;
+
+    case "delete":
+      showDeleteModal.value = true;
+      break;
+
+    default:
+      break;
+  }
 };
 
-const { apps } = defineProps({
+const { apps, removeApp } = defineProps({
   apps: Array<AppType>,
+  removeApp: Function,
 });
+console.log(apps, selectedRow);
 
 const setEditOpen = (val: boolean) => (openEditModal.value = val);
+const setShowDeleteModal = (val: boolean) => (showDeleteModal.value = val);
 
 const handleEditAppName = async (values: any) => {
-  if (values) {
+  if (values && currentData.value.appId) {
     const payload: Partial<AppType> = {
-      appId: curentData.value.appId,
+      appId: currentData.value.appId,
       appName: values.appName,
     };
-    
+
     try {
       disabled.value = true;
       await updateApp(payload);
-      curentData.value.appName = payload.appName;
+      currentData.value.appName = payload.appName;
       openEditModal.value = false;
       selectedRow.value = "";
-
-      Swall.Toast("App Name Changed Successfully!", "success")
-
+      Swall.Toast("App Name Changed Successfully!", "success");
     } catch (error) {
       console.error(error);
+      Swall.Toast("Something went wrong, try after some time", "error");
+    } finally {
+      disabled.value = false;
+    }
+  }
+};
+
+const handleDeleteApp = async () => {
+  if (currentData.value.appId && removeApp) {
+    try {
+      disabled.value = true;
+      await deleteApp(currentData.value.appId);
+      removeApp(currentData.value.appId);
+      showDeleteModal.value = false;
+      selectedRow.value = "";
+      Swall.Toast("App Deleted Successfully!", "success");
+    } catch (error) {
+      console.error(error);
+      Swall.Toast("Something went wrong, try after some time", "error");
     } finally {
       disabled.value = false;
     }
@@ -111,61 +143,75 @@ const handleEditAppName = async (values: any) => {
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
           <table class="min-w-full leading-normal">
             <thead>
-              <tr >
+              <tr>
                 <th
-                v-for="(header, index) in appHeaders"
+                  v-for="(header, index) in appHeaders"
                   class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
-                  :key="index"                >
-                {{header}}
+                  :key="index"
+                >
+                  {{ header }}
                 </th>
-               
               </tr>
             </thead>
             <tbody>
               <tr
                 v-for="(data, index) in apps"
                 :key="index"
-                class=" cursor-pointer bg-white"
+                class="cursor-pointer bg-white"
               >
-                <td class="px-5 py-5 text-sm  border-b border-gray-200" >
-                  <p class="text-gray-900 whitespace-nowrap">
+                <td class="px-5 py-5 text-sm border-b border-gray-200">
+                  <span class="text-gray-900 whitespace-nowrap">
                     {{ data.appName }}
-                  </p>
+                  </span>
                 </td>
 
-                <td class="px-5 py-5 text-sm  border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">Free</p>
+                <td class="px-5 py-5 text-sm border-b border-gray-200">
+                  <span class="text-gray-900 whitespace-nowrap">Free</span>
                 </td>
-                <td class="px-5 py-5 text-sm  border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">
+                <td class="px-5 py-5 text-sm border-b border-gray-200">
+                  <span class="text-gray-900 whitespace-nowrap">
                     {{ data.organization }}
-                  </p>
+                  </span>
                 </td>
                 <td class="px-5 py-5 text-sm e border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">
+                  <span class="text-gray-900 whitespace-nowrap">
                     {{ data.source }}
-                  </p>
+                  </span>
                 </td>
-                <td class="px-5 py-5 text-sm  border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">
+                <td class="px-5 py-5 text-sm border-b border-gray-200">
+                  <span class="text-gray-900 whitespace-nowrap">
                     {{ data.userId }}
-                  </p>
+                  </span>
                 </td>
                 <td class="px-5 py-5 text-sm e border-b border-gray-200">
-                  <p class="text-gray-900 whitespace-nowrap">
-    
-                <Button :on-click="()=> selectedRow = data.appId" variant="none" 
-                  type="button"><template v-slot:left-icon>     <svg class="w-[21px] h-[21px] text-gray-800 dark:text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-    <path stroke="currentColor" stroke-linecap="round" stroke-width="3" d="M12 6h0m0 6h0m0 6h0"/>
-  </svg>
-         </template>
-                     </Button>
+                  <span class="text-gray-900 whitespace-nowrap">
+                    <Button
+                      :on-click="() => (selectedRow = data.appId)"
+                      variant="none"
+                      type="button"
+                      ><template v-slot:left-icon>
+                        <svg
+                          class="w-[21px] h-[21px] text-gray-800 dark:text-gray-900"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-width="3"
+                            d="M12 6h0m0 6h0m0 6h0"
+                          />
+                        </svg>
+                      </template>
+                    </Button>
 
-                <div
-                  v-show="selectedRow === data.appId"
-                  class="fixed inset-0 z-10 w-full h-full"
-                  @click="selectedRow = ''"
-                />
+                    <div
+                      v-show="selectedRow === data.appId"
+                      class="fixed inset-0 z-10 w-full h-full"
+                      @click="selectedRow = ''"
+                    />
                     <transition
                       enter-active-class="transition duration-150 ease-out transform"
                       enter-from-class="scale-95 opacity-0"
@@ -185,26 +231,73 @@ const handleEditAppName = async (values: any) => {
                           Dashboard
                         </div>
                         <div
-                          @click="setCurrentData(data)"
+                          @click="setCurrentData(data, 'edit')"
                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
                         >
                           Rename
                         </div>
                         <div
-                          href="#"
+                          @click="setCurrentData(data, 'delete')"
                           class="block px-4 py-2 text-sm text-red-600 hover:bg-blue-600 hover:text-white"
                         >
                           Delete
                         </div>
                       </div>
                     </transition>
-                  </p>
+                  </span>
                 </td>
               </tr>
             </tbody>
           </table>
+          <Form
+            novalidate
+            @submit="handleEditAppName"
+            :validation-schema="appNameValidation"
+          >
+            <Modal
+              :open="openEditModal"
+              :setOpen="setEditOpen"
+              :title="'Edit App Name'"
+              :closable="true"
+              :cancel-button-props="{ disabled }"
+              :ok-button-props="{ disabled }"
+              :on-cancel="() => (selectedRow = '')"
+              ><template v-slot:body>
+                <div>
+                  <Field
+                    variant="text"
+                    id="appName"
+                    name="appName"
+                    v-model="currentAppName"
+                    class="w-full mt-2 border-gray-200 rounded-md focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
+                    placeholder="App Name"
+                    autocomplete="off"
+                    required
+                  />
+                  <div>
+                    <ErrorMessage name="appName" class="text-red-600 text-sm" />
+                  </div>
+                </div> </template
+            ></Modal>
+          </Form>
+          <Modal
+            :open="showDeleteModal"
+            :setOpen="setShowDeleteModal"
+            :title="'Delete App'"
+            :closable="true"
+            :cancel-button-props="{ disabled, text: 'No' }"
+            :ok-button-props="{ disabled, text: 'Yes', variant: 'danger' }"
+            :on-cancel="() => (selectedRow = '')"
+            :on-ok="handleDeleteApp"
+            ><template v-slot:body> <div>Are you sure?</div> </template></Modal
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
-          <!-- <DataTable
+<!-- <DataTable
             :value="apps"
             paginator
             :rows="5"
@@ -296,62 +389,3 @@ const handleEditAppName = async (values: any) => {
               </template>
             </Column>
           </DataTable> -->
-
-          <Form
-            novalidate
-            @submit="handleEditAppName"
-            :validation-schema="appNameValidation"
-          >
-            <Modal
-              :open="openEditModal"
-              :setOpen="setEditOpen"
-              :title="'Edit App Name'"
-              :closable="true"
-              :cancel-button-props="{ disabled }"
-              :ok-button-props="{ disabled }"
-              :on-cancel="()=> selectedRow = ''"
-              ><template v-slot:body>
-                <div>
-                  <Field
-                    variant="text"
-                    id="appName"
-                    name="appName"
-                    v-model="currentAppName"
-                    class="w-full mt-2 border-gray-200 rounded-md focus:border-blue-600 focus:ring focus:ring-opacity-40 focus:ring-blue-500"
-                    placeholder="App Name"
-                    autocomplete="off"
-                    required
-                  />
-                  <div>
-                    <ErrorMessage name="appName" class="text-red-600 text-sm" />
-                  </div>
-                </div>
-              </template></Modal
-            >
-          </Form>
-
-          
-
-          <!-- <div class="px-5 py-5 text-sm bg-white border-b border-gray-200">
-            <span class="text-xs text-gray-900 xs:text-sm"
-              >Showing 1 to 4 of 50 Entries</span
-            >
-
-            <div class="inline-flex mt-2 xs:mt-0">
-              <button
-                class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400"
-              >
-                Prev
-              </button>
-              <button
-                class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400"
-              >
-                Next
-              </button>
-            </div>
-          </div> -->
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
