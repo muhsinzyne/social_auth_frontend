@@ -28,7 +28,7 @@ onMounted(async () => {
   }
 });
 
-const removeApp = (appIdToDelete) => {
+const removeApp = (appIdToDelete: string) => {
   const index = apps.value.findIndex((app) => app.appId === appIdToDelete);
   if (index !== -1) {
     apps.value.splice(index, 1);

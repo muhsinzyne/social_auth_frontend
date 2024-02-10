@@ -12,6 +12,7 @@ import ResetPassword from "@/pages/ResetPassword/index.vue";
 import Apps from "@/pages/Apps/index.vue";
 import NewApp from "@/pages/Apps/Components/NewApp/index.vue";
 import Organisations from "@/pages/Organisations/index.vue";
+import AppDashboard from "@/pages/Apps/Components/AppDashboard/index.vue";
 
 const { routeAuthenticated } = useRouteAuthenticated();
 
@@ -91,6 +92,15 @@ const routes = [
     component: Apps,
     meta: {
       pageTitle: "Apps",
+      requiresAuth: true, // Add this meta field to indicate authentication is required
+    },
+  },
+  {
+    path: "/dashboard/apps/:appId",
+    name: "app-dashboard",
+    component: AppDashboard,
+    meta: {
+      pageTitle: "App Dashboard",
       requiresAuth: true, // Add this meta field to indicate authentication is required
     },
   },

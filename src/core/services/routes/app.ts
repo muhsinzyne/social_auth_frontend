@@ -2,6 +2,7 @@ import {
   AppType,
   CommonErrorResponse,
   GetAllAppsResponse,
+  GetSingleAppResponse,
 } from "@/common/types/types";
 import ApiService from "../APIService";
 
@@ -30,5 +31,13 @@ export const updateApp = async (
 export const deleteApp = async (slug: string): Promise<CommonErrorResponse> => {
   ApiService.setHeader();
   const response = await ApiService.delete("/api/app", slug);
+  return response.data;
+};
+
+export const getSingleApp = async (
+  appId: AppType["appId"]
+): Promise<GetSingleAppResponse> => {
+  ApiService.setHeader();
+  const response = await ApiService.get("/api/app", appId);
   return response.data;
 };

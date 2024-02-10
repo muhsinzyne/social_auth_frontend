@@ -91,3 +91,7 @@ export interface AppType {
 export interface GetAllAppsResponse extends CommonErrorResponse {
   data: Array<AppType>;
 }
+
+export interface GetSingleAppResponse extends CommonErrorResponse {
+  data: AppType;
+}

@@ -10,6 +10,13 @@ import Button from "@/common/components/Button/index.vue";
 import { AppType } from "@/common/types/types";
 import { updateApp, deleteApp } from "@/core/services/routes/app";
 import Swall from "@/core/helpers/swal";
+import { useRouter } from "vue-router";
+
+const route = useRouter();
+
+const navigateToApp = (appId: string) => {
+  route.push(`/dashboard/apps/${appId}`);
+};
 
 // const selectedProduct = ref();
 // const metaKey = ref(true);
@@ -225,7 +232,7 @@ const handleDeleteApp = async () => {
                         class="fixed right-0 z-20 w-48 py-2 mt-2 mr-10 bg-white rounded shadow-xl border"
                       >
                         <div
-                          href="#"
+                          @click="navigateToApp(data.appId)"
                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-600 hover:text-white"
                         >
                           Dashboard

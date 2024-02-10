@@ -5,6 +5,9 @@ import { addApp } from "@/core/services/routes/app";
 import { AppType } from "@/common/types/types";
 import Swall from "@/core/helpers/swal";
 import { handleNavigate } from "@/core/helpers/path";
+import { ref } from "vue";
+
+const currentStep = ref(1);
 
 const organizationOptions = [
   { value: "US", label: "Organisation 1" },
@@ -20,6 +23,7 @@ const stepOneValidation = Yup.object().shape({
 });
 
 const handleStepOne = async (values: any) => {
+  nextStep();
   if (values) {
     const payload: AppType = {
       ...values,
@@ -35,12 +39,24 @@ const handleStepOne = async (values: any) => {
     }
   }
 };
+
+const nextStep = () => (currentStep.value = currentStep.value + 1);
+
+const previousStep = () => {
+  if (currentStep.value === 1) return handleNavigate("apps");
+  currentStep.value = currentStep.value - 1;
+};
 </script>
 
 <template>
   <div class="mt-8">
     <div class="mt-6">
-      <h2 class="text-xl font-semibold leading-tight">New App</h2>
+      <div>
+        <span class="text-xl font-semibold leading-tight">New App</span>
+        <span class="pl-1 text-gray-500 text-base"
+          >> Step {{ currentStep }}</span
+        >
+      </div>
       <Form
         novalidate
         @submit="handleStepOne"
@@ -48,9 +64,9 @@ const handleStepOne = async (values: any) => {
         :validation-schema="stepOneValidation"
       >
         <div
-          class="mt-4 p- rounded-md shadow-md w-auto p-6 bg-white border border-gray-200 dark:bg-white dark:border-white md:max-h-[70vh] md:overflow-y-auto"
+          class="mt-4 rounded-md shadow-md w-auto p-6 bg-white border border-gray-200 dark:bg-white dark:border-white md:max-h-[68vh] md:overflow-y-auto"
         >
-          <div class="grid gap-6 mb-6 lg:grid-cols-2">
+          <div class="grid gap-6 lg:grid-cols-2">
             <div class="pr-6">
               <label for="app_name" class="text-gray-700"
                 >Name of your app</label
@@ -217,7 +233,29 @@ const handleStepOne = async (values: any) => {
             </div>
           </div>
         </div>
-        <div class="pt-3">
+        <div class="py-3 flex items-center gap-2">
+          <button
+            @click="previousStep"
+            type="button"
+            class="flex items-center px-2 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+          >
+            <svg
+              class="w-6 h-6 text-white dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m15 19-7-7 7-7"
+              />
+            </svg>
+            <span class="mx-1">Back</span>
+          </button>
           <button
             type="submit"
             class="flex items-center px-2 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:bg-blue-500"

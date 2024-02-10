@@ -5,7 +5,7 @@ import Header from "@/common/components/Header/index.vue";
 
 <template>
   <div class="flex h-screen bg-gray-200 font-roboto">
-    <Sidebar />
+    <Sidebar :key="$route.fullPath" />
 
     <div class="flex-1 flex flex-col overflow-hidden h-full">
       <Header />
