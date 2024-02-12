@@ -51,11 +51,14 @@ const VARIANT_COLOR = {
 
 const VARIANT_COLOR_DISABLED = {
   [ButtonVariant.primary]:
-    "dark:bg-blue-500 cursor-not-allowed dark:hover:bg-blue-500",
+    commonClassForColors +
+    " bg-blue-500 cursor-not-allowed dark:hover:bg-blue-500",
   [ButtonVariant.none]:
-    "dark:bg-blue-200 cursor-not-allowed dark:hover:bg-blue-200 text-slate-100 dark:hover:text-slate-100",
+    commonClassForColors +
+    " bg-blue-200 cursor-not-allowed dark:hover:bg-blue-200 text-slate-100 dark:hover:text-slate-100",
   [ButtonVariant.danger]:
-    "dark:bg-red-500 cursor-not-allowed dark:hover:bg-red-500",
+    commonClassForColors +
+    " dark:bg-red-500 cursor-not-allowed dark:hover:bg-red-500",
 };
 </script>
 <template>
@@ -63,8 +66,9 @@ const VARIANT_COLOR_DISABLED = {
     @click="onClick && onClick()"
     :type="type"
     class="flex items-center px-2 py-2 focus:outline-none"
-    :class="VARIANT_COLOR[variant]"
-    v-bind:class="(disabled && VARIANT_COLOR_DISABLED[variant]) || ''"
+    v-bind:class="
+      (disabled && VARIANT_COLOR_DISABLED[variant]) || VARIANT_COLOR[variant]
+    "
     :disabled="disabled"
   >
     <slot name="left-icon" /> <span v-if="text" class="mx-1">{{ text }}</span>

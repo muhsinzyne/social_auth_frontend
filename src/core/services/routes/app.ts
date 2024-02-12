@@ -1,14 +1,15 @@
 import {
   AppType,
   CommonErrorResponse,
+  CreateAppResponse,
   GetAllAppsResponse,
   GetSingleAppResponse,
 } from "@/common/types/types";
 import ApiService from "../APIService";
 
 export const addApp = async (
-  payload: AppType
-): Promise<CommonErrorResponse> => {
+  payload: AppType | Partial<AppType>
+): Promise<CreateAppResponse> => {
   ApiService.setHeader();
   const response = await ApiService.post("/api/app", payload);
   return response.data;

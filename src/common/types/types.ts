@@ -86,6 +86,8 @@ export interface AppType {
   source: string;
   appId: string;
   userId: string;
+  step: number;
+  domain?: string;
 }
 
 export interface GetAllAppsResponse extends CommonErrorResponse {
@@ -94,4 +96,10 @@ export interface GetAllAppsResponse extends CommonErrorResponse {
 
 export interface GetSingleAppResponse extends CommonErrorResponse {
   data: AppType;
+}
+
+export interface CreateAppResponse extends CommonErrorResponse {
+  data: {
+    appId: string;
+  };
 }
