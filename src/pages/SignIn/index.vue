@@ -135,7 +135,7 @@ const onSubmitLogin = async (values: RegistrationCredsType | unknown) => {
 
         data && setCookie("userId", data.user.id.toString(), 1);
 
-        Swall.Timer("You have successfully Logged In!", "success");
+        Swall.Toast("You have successfully Logged In!", "success");
 
         handleNavigate("apps");
       }

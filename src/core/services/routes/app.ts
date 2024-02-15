@@ -3,6 +3,7 @@ import {
   CommonErrorResponse,
   CreateAppResponse,
   GetAllAppsResponse,
+  GetAllAppsResponseFiltered,
   GetSingleAppResponse,
 } from "@/common/types/types";
 import ApiService from "../APIService";
@@ -40,5 +41,14 @@ export const getSingleApp = async (
 ): Promise<GetSingleAppResponse> => {
   ApiService.setHeader();
   const response = await ApiService.get("/api/app", appId);
+  return response.data;
+};
+
+export const getAllAppsFiltered = async (payload: {
+  page: number;
+  itemsPerPage: number;
+}): Promise<GetAllAppsResponseFiltered> => {
+  ApiService.setHeader();
+  const response = await ApiService.post("/api/app/filtered", payload);
   return response.data;
 };

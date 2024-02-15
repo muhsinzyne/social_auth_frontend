@@ -105,7 +105,7 @@ const routes = [
     },
   },
   {
-    path: "/dashboard/apps/new",
+    path: "/dashboard/apps/new/:step",
     name: "newApp",
     component: NewApp,
     meta: {

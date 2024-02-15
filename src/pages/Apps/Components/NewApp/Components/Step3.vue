@@ -39,7 +39,9 @@ const handleStepThree = (values: any) => {
       <Card width="full">
         <template v-slot:card-body
           ><div class="flex justify-center items-center p-5" v-if="isLoading">
-            <LoaderIcon color="#1C64F2CC" size="20px" />
+            <div class="flex justify-center items-center">
+              <LoaderIcon color="#1C64F2CC" size="20px" />
+            </div>
           </div>
           <div v-else class="grid gap-2">
             <div class="font-normal text-lg">Set your sending domain</div>
@@ -91,7 +93,6 @@ const handleStepThree = (values: any) => {
           type="submit"
           text="Next Step"
           :disabled="isLoading"
-          :on-click="() => handleData && handleData(null, 2)"
           ><template v-slot:right-icon>
             <RightArrowIcon />
           </template>

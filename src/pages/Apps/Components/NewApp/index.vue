@@ -1,17 +1,22 @@
 <script lang="ts" setup>
-import { addApp } from "@/core/services/routes/app";
+import { addApp, getSingleApp } from "@/core/services/routes/app";
 import { AppType } from "@/common/types/types";
 import Swall from "@/core/helpers/swal";
 import { handleNavigate } from "@/core/helpers/path";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Step1 from "./Components/Step1.vue";
 import Step2 from "./Components/Step2.vue";
 import Step3 from "./Components/Step3.vue";
+import Step4 from "./Components/Step4.vue";
+import { useRoute, useRouter } from "vue-router";
 
-const currentStep = ref(1);
+const route = useRoute();
+const router = useRouter();
+const currentStep = ref(Number(route.params.step) || 4);
 const currentData = ref<AppType | Partial<AppType>>();
 const isLoading = ref(false);
-const appId = ref<string>();
+const appId = ref<string>(route.query.appId ? String(route.query.appId) : "");
+const domain = ref<string>();
 
 const handleData = async (values: Partial<AppType>, step: number) => {
   console.log(values);
@@ -23,6 +28,9 @@ const handleData = async (values: Partial<AppType>, step: number) => {
       ...values,
       step,
     };
+    if (values.domain) {
+      domain.value = values.domain;
+    }
   }
   nextStep();
   if (currentData.value) {
@@ -32,7 +40,11 @@ const handleData = async (values: Partial<AppType>, step: number) => {
       if (data.appId) appId.value = data.appId;
       console.log(data.appId);
 
-      if (step === 3) {
+      router.push(
+        `/dashboard/apps/new/${currentStep.value + 1}?appId=${appId.value}`
+      );
+
+      if (step === 5) {
         Swall.Toast("App Created Succesfully.", "success");
         handleNavigate("apps");
       }
@@ -46,12 +58,32 @@ const handleData = async (values: Partial<AppType>, step: number) => {
   }
 };
 
-const nextStep = () => (currentStep.value = currentStep.value + 1);
+const nextStep = () => {
+  currentStep.value = currentStep.value + 1;
+};
 
 const previousStep = () => {
   if (currentStep.value === 1) return handleNavigate("apps");
+  router.push(
+    `/dashboard/apps/new/${currentStep.value - 1}?appId=${appId.value}`
+  );
   currentStep.value = currentStep.value - 1;
 };
+
+onMounted(async () => {
+  if (appId.value) {
+    try {
+      const response = await getSingleApp(appId.value);
+      domain.value = response.data.domain;
+      console.log("hhh", response.data);
+    } catch (error) {
+      console.error(error);
+      Swall.Timer("Somethig went wrong! try after some time.", "warning");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+});
 </script>
 
 <template>
@@ -80,6 +112,13 @@ const previousStep = () => {
         :handleData="handleData"
         :isLoading="isLoading"
         v-show="currentStep === 3"
+      />
+      <Step4
+        :previousStep="previousStep"
+        :handleData="handleData"
+        :isLoading="isLoading"
+        :domain="domain"
+        v-show="currentStep === 4"
       />
     </div>
   </div>

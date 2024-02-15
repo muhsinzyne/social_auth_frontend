@@ -103,3 +103,10 @@ export interface CreateAppResponse extends CommonErrorResponse {
     appId: string;
   };
 }
+
+export interface GetAllAppsResponseFiltered extends CommonErrorResponse {
+  data: {
+    apps: Array<AppType>;
+    count: number;
+  };
+}
